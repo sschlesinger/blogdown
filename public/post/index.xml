@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Post on Schlesinger CS631</title>
+    <link>/post/</link>
+    <description>Recent content in Post on Schlesinger CS631</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>/post/2018-05-16-test-post/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-05-16-test-post/</guid>
+      <description>+++ title = ‘2018 05 16 Test Post’ date = 2018-05-16T13:24:13-07:00 draft = true meta_img = “/images/image.jpg” tags = [“tags”] description = “Desc” hacker_news_id = “” lobsters_id = “” +++</description>
+    </item>
+    
+  </channel>
+</rss>
