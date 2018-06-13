@@ -12,3 +12,107 @@ lobsters_id: ''
 meta_img: /images/image.jpg
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(gapminder)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(readr)
+```
+
+2. Gapminder Challenge
+Pick at least two of the tasks below from the task menu and approach each with a table and figure.
+1. Get the maximum and minimum of GDP per capita for all continents.
+```{r}
+#Table
+max_min_gdpPercap_byCont <- gapminder %>%
+  group_by(continent) %>% 
+  summarize(min_gdpPercap_byCont = min(gdpPercap), max_gdpPercap_byCont = max(gdpPercap))
+max_min_gdpPercap_byCont
+```
+Here I show the overall maximum and overall minimum gdp per cap each continent has ever experienced.
+
+```{r}
+#tidy table to fewer columns
+max_min_gdpPercap_byCont_tidy<- max_min_gdpPercap_byCont %>%
+  gather(minORmax, minmax_gdpPerCap, min_gdpPercap_byCont:max_gdpPercap_byCont, factor_key = TRUE) %>%
+  arrange(continent)
+max_min_gdpPercap_byCont_tidy
+```
+
+
+2. Look at the spread of GDP per capita across countries within the continents.
+```{r}
+#Table
+max_min_gdpPercap_countriesInCont <- gapminder %>%
+  group_by(continent, year) %>%
+  filter(gdpPercap==min(gdpPercap) | gdpPercap==max(gdpPercap)) %>%
+  arrange(year, continent) %>%
+  mutate(country, minmax=rank(gdpPercap)) %>%
+  mutate(minmax = as.factor(minmax)) %>%
+  select(-country, -pop, -lifeExp) # remove country column
+max_min_gdpPercap_countriesInCont
+```
+Here I show the minimum and maximum gdp per capita per continent by year.
+
+```{r}
+#change data so that have cont/year/mingdp/maxgdp
+max_min_gdpPercap_byCont <- max_min_gdpPercap_countriesInCont %>%
+  spread(minmax, gdpPercap, sep = "_") #sep adds in previous column name
+max_min_gdpPercap_byCont
+```
+
+
+```{r}
+#Plot
+ggplot(max_min_gdpPercap_byCont) +
+  geom_ribbon(aes(x = year, ymin = minmax_1, ymax = minmax_2, fill = continent), alpha = 0.05) + #creates shading between min and max
+  geom_line(aes(x = year, y = minmax_1, color = continent)) + #min line
+  geom_line(aes(x = year, y = minmax_2, color = continent)) + #max line
+  scale_y_log10() +
+  labs(title = "Minimum and Maximum GDP Over Time by Country", x = "Year", y = "GDP (log10)") +
+  theme(
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    axis.title = element_text(face="bold"), 
+    title = element_text(face="bold"), 
+    axis.text = element_text(size = 10), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    axis.line.x = element_line(color = "gray30", size = .5), 
+    axis.line.y = element_line(color = "gray30", size = .5), 
+    axis.ticks = element_line(color = "gray30", size = 1)
+    )
+```
+
+So while I was able to achieve my goal (learn to use ribbon plotting), the visualization actually turned out quite poor! I thought there would be a lot more disparity between continents and they would separate more easily. Because that is not the case, I would not say this is an effective visualization and another method would be more useful.
+
+1) Type of graph:
+This is a varaition of a stacked area graph that is sometimes called a shaded line graph.
+
+2) Description of data:
+These data are from gapminder, a resource that tracks a huge number of global socioeconomic variables over time. For my purposes I focused on GDP, country, and time.
+
+3) Description of audience:
+This audience may be a layperson casually interested in global socioeconomic changes.
+
+4) Representation Description:
+What I was trying to show was the disparity between max/min per continent over time, as well as absolute min/max between continents. WHile it technically does show that, the data are not appropriate for this kind of graph apparently and the visualization actually isn't very useful!
+
+5) How to read it & What to look for: 
+I would first look for the biggest disparities, and then compare that to other continents. If you can see it, I think it's quite interesting that Asia has an enormous spread between max and min that remains over time. It also until relatively recently had the largest max and was on-par with Africa for lowest min. Oceania, on the other hand, has had a tight relationship between its max and min, although that has spread over time (and it likely in part due to the small number of countries represented).
+
+6) Presentation tips: 
+These are categorical data, so a generic, non-heirarchal palette was used. The scale of log10 was chosen because the disparity between continents meant that to see the highest performers, all the other values were squished together at the bottom.
+
+7) Variations and alternatives: 
+I would definitely use an alternative. These data have too much overlap to make a meaningful statement using this methodology. A better alternative would likely be to separate out separate questions and present them separately. A bar graph would probably do well.
+
+8) Methods:
+ For this graph I plotted the max and min GDP per continent by year, and then shaded the region between the max and min. The hope was to be able to better see the max and min per continent (when it's two discrete, inlinked lines in a mass of lines it was difficult), as well as highlight the disparity between max and min over time.
