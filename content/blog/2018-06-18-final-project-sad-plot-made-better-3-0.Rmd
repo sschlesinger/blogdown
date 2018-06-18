@@ -1,0 +1,14 @@
+---
+title: Final Project - Sad Plot Made Better 3.0
+author: Saundra Schlesinger
+date: '2018-06-18'
+slug: final-project-sad-plot-made-better-3-0
+categories:
+  - R
+tags: []
+description: Desc
+hacker_news_id: ''
+lobsters_id: ''
+meta_img: /images/image.jpg
+---
+
