@@ -1,20 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Saundra Schlesinger CS631 Final Project</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Saundra Schlesinger" />
+    <meta name="date" content="2018-06-20" />
+    <link href="2018-06-20-finalslides_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="2018-06-20-finalslides_files/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="2018-06-20-finalslides_files/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Saundra Schlesinger CS631 Final Project
+### Saundra Schlesinger
+### June 20, 2018
+
 ---
-title: "Saundra Schlesinger CS631 Final Project"
-author: "Saundra Schlesinger"
-date: "June 20, 2018"
-output: 
-  xaringan::moon_reader:
-    css: [default, metropolis, metropolis-fonts]
-    nature:
-      highlightStyle: atelier-lakeside-light
-      highlightLines: true
-      countIncrementalSlides: false
+
+
+
+
+
+
+```
+## Parsed with column specification:
+## cols(
+##   Mouse = col_character(),
+##   Stage = col_character(),
+##   Dapi = col_double(),
+##   Edu = col_double(),
+##   CSA = col_integer(),
+##   Length = col_integer()
+## )
+```
+
+```
+## Observations: 25
+## Variables: 6
+## $ Mouse  &lt;chr&gt; "EH89-2", "EH89-4", "EH89-5", "ER93-1", "FI01-1", "LW02...
+## $ Stage  &lt;chr&gt; "E14.5", "E14.5", "E14.5", "E14.5", "E16.5", "E16.5", "...
+## $ Dapi   &lt;dbl&gt; 81.6, 70.1, 70.5, 75.9, 66.9, 67.8, 70.1, 70.2, 88.4, 8...
+## $ Edu    &lt;dbl&gt; 12.2, 20.8, 15.9, 16.5, 11.4, 9.6, 11.9, 12.5, 4.3, 4.5...
+## $ CSA    &lt;int&gt; 2656, 2153, 2174, 2404, 2332, 2380, 2901, 2372, 7158, 7...
+## $ Length &lt;int&gt; 384, 480, 423, 432, 816, 1056, 768, 768, 1812, 1921, 18...
+```
+
+
+
+
+```
+##     Mouse Stage  Dapi  Edu   CSA Length days_post_conception
+## 1  EH89-2 E14.5  81.6 12.2  2656    384                 14.5
+## 2  EH89-4 E14.5  70.1 20.8  2153    480                 14.5
+## 3  EH89-5 E14.5  70.5 15.9  2174    423                 14.5
+## 4  ER93-1 E14.5  75.9 16.5  2404    432                 14.5
+## 5  FI01-1 E16.5  66.9 11.4  2332    816                 16.5
+## 6  LW02-8 E16.5  67.8  9.6  2380   1056                 16.5
+## 7  LW02-9 E16.5  70.1 11.9  2901    768                 16.5
+## 8  ER92-1 E16.5  70.2 12.5  2372    768                 16.5
+## 9  DR11-1    P0  88.4  4.3  7158   1812                 19.0
+## 10 DR11-2    P0  82.5  4.5  7802   1921                 19.0
+## 11 WQ32-1    P0  79.9  4.1  7180   1852                 19.0
+## 12 WQ32-2    P0  82.3  4.3  7394   1857                 19.0
+## 13 DR11-3   P10 122.7  1.2 25156   3252                 29.0
+## 14 PG22-1   P10 118.4  2.5 28428   3485                 29.0
+## 15   ZS73   P10 124.8  2.1 27895   3331                 29.0
+## 16 IU22-1   P10 108.0  2.7 25898   3221                 29.0
+## 17 IU22-2   P10 110.0  1.9 27160   3356                 29.0
+## 18 GZ73-2   P30  79.0  0.0 33780   4092                 49.0
+## 19 GZ73-3   P30  68.0  0.0 35783   4380                 49.0
+## 20 SA98-1   P30  80.0  0.0 31653   4279                 49.0
+## 21 IU22-3   P30  75.7  0.0 38533   4250                 49.0
+## 22 IU22-4   P30  75.4  0.0 31032   4135                 49.0
+## 23   EL59  P100  80.0  0.0 36536   7400                119.0
+## 24   EL54  P100  82.0  0.0 35568   7900                119.0
+## 25   FG53  P100  80.0  0.0 35462   7533                119.0
+```
+
+
+
+
+
+
+class: inverse, middle, center
+#Tendon Elongation
+![](https://i.imgur.com/jx2iYpB.png)&lt;!-- --&gt;
+
+---
+
+class: inverse, center
+#Parameters of Tendon Growth
+![](https://i.imgur.com/uEKbnjV.png)&lt;!-- --&gt;
+
+Length
+--
+&lt;br&gt;&lt;/br&gt;Cell number (via DAPI+ nuclear marker)
+--
+&lt;br&gt;&lt;/br&gt;Cross-sectional area (cells + matrix)
+--
+&lt;br&gt;&lt;/br&gt;Proliferation (% EdU+ nuclei)
+
+---
+
+class: inverse, center
+#Parameters of Tendon Growth
+![](https://i.imgur.com/uEKbnjV.png)&lt;!-- --&gt;
+
+&lt;b&gt;Length
+&lt;br&gt;&lt;/br&gt; Cell number (via DAPI+ nuclear marker)
+&lt;/b&gt;
+&lt;br&gt;&lt;/br&gt;Cross-sectional area (cells + matrix)
+&lt;br&gt;&lt;/br&gt;Proliferation (% EdU+ nuclei)
+
+---
+
+#Collection Method
+
+Sectioned Limb
+--
+&lt;br&gt;&lt;/br&gt;Quantified growth parameters for 10 sections per limb
+--
+&lt;br&gt;&lt;/br&gt;Averaged values from all sections to create one value per parameter per limb
+--
+&lt;br&gt;&lt;/br&gt;Each value/limb is one N
+
 ---
 
 
+```r
+quant &lt;- read_csv("https://gist.githubusercontent.com/sschlesinger/44ec0c892ce0bf0d78e750bc78e2aef7/raw/bba5617841b28de26a569c5a0dd10d2cd7933fc9/TendonQuant.csv")
+```
 
-<pre class="r"><code>knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
-                      fig.width = 10.5, fig.height = 4, 
-                      comment = NA, rows.print = 16)</code></pre>
-<hr />
-<p>class: inverse, middle, center # This is Slide 1 ## This is slide 1 —</p>
+
+```r
+glimpse(quant)
+```
+
+```
+## Observations: 25
+## Variables: 6
+## $ Mouse  &lt;chr&gt; "EH89-2", "EH89-4", "EH89-5", "ER93-1", "FI01-1", "LW02...
+## $ Stage  &lt;chr&gt; "E14.5", "E14.5", "E14.5", "E14.5", "E16.5", "E16.5", "...
+## $ Dapi   &lt;dbl&gt; 81.6, 70.1, 70.5, 75.9, 66.9, 67.8, 70.1, 70.2, 88.4, 8...
+## $ Edu    &lt;dbl&gt; 12.2, 20.8, 15.9, 16.5, 11.4, 9.6, 11.9, 12.5, 4.3, 4.5...
+## $ CSA    &lt;int&gt; 2656, 2153, 2174, 2404, 2332, 2380, 2901, 2372, 7158, 7...
+## $ Length &lt;int&gt; 384, 480, 423, 432, 816, 1056, 768, 768, 1812, 1921, 18...
+```
+
+---
+
+#Tidied and prepared data
+
+Added a column to convert embryonic/postnatal staging to days
+--
+&lt;br&gt;&lt;/br&gt;Converted um to cm
+--
+&lt;br&gt;&lt;/br&gt;Created color palette
+
+---
+
+#Axes
+![](2018-06-20-finalslides_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+
+---
+
+#Final Length Visualization
+![](2018-06-20-finalslides_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Length, color=fct_reorder2(Stage,days_post_conception,Length))) +
+  geom_jitter(position = position_jitter(height = 0, width = .1),
+              alpha = .5) + 
+  stat_summary(fun.y = median, 
+               fun.ymin = median, 
+               fun.ymax = median, 
+               geom = "crossbar", 
+               lwd = .2, # make median line thinner
+               width = .5)+ # set median line width
+  labs(title = "FCU Tendon Length By Developmental Stage", x = "Stage", y = "Averaged Length (cm)") +
+  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  theme(
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    axis.title = element_text(face="bold"), 
+    title = element_text(face="bold"), 
+    axis.text = element_text(size = 10), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    axis.line.x = element_line(color = "gray30", size = .5), 
+    axis.line.y = element_line(color = "gray30", size = .5), 
+    axis.ticks = element_line(color = "gray30", size = 1)
+    )+
+  guides(colour = guide_legend(reverse=T))
+```
+
+---
+
+class: inverse, center
+#Example of previously used visualization (WHAT?)
+
+![](https://i.imgur.com/OhghF6h.png)&lt;!-- --&gt;
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atelier-lakeside-light",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

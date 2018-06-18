@@ -11,15 +11,207 @@ output:
       countIncrementalSlides: false
 ---
 
-```{r}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
-                      fig.width = 10.5, fig.height = 4, 
-                      comment = NA, rows.print = 16)
+
+```{r load_packages, include = FALSE, echo = FALSE}
+library(here)
+library(tidyverse)
+library(extrafont)
+library(dplyr)
+library(readr)
+library(beyonce)
 ```
- 
----
+
+```{r echo = FALSE}
+quant <- read_csv("https://gist.githubusercontent.com/sschlesinger/44ec0c892ce0bf0d78e750bc78e2aef7/raw/bba5617841b28de26a569c5a0dd10d2cd7933fc9/TendonQuant.csv")
+glimpse(quant)
+```
+
+```{r echo = FALSE}
+quant_corr <- quant %>%
+  mutate(days_post_conception = Stage) %>%
+  mutate(days_post_conception = replace(days_post_conception, Stage == "E14.5", 14.5)) %>%
+  mutate(days_post_conception = replace(days_post_conception, Stage == "E16.5", 16.5)) %>%
+  mutate(days_post_conception = replace(days_post_conception, Stage == "E18.5", 18.5)) %>%
+  mutate(days_post_conception = replace(days_post_conception, Stage == "P0", 19)) %>%
+  mutate(days_post_conception = replace(days_post_conception, Stage == "P10", 29)) %>%
+  mutate(days_post_conception = replace(days_post_conception, Stage == "P30", 49)) %>%
+  mutate(days_post_conception = replace(days_post_conception, Stage == "P100", 119))
+```
+
+```{r echo = FALSE}
+transform(quant_corr, days_post_conception = as.numeric(days_post_conception))
+```
+
+```{r echo = FALSE}
+quant_corr <- quant_corr %>%
+  mutate(Length = Length/10000)
+```
+
+```{r echo = FALSE}
+Color_Cont <- beyonce_palette(21)[c(1,2,3,4,5,6)]
+```
+
 
 class: inverse, middle, center
-# This is Slide 1
-## This is slide 1
+#Tendon Elongation
+```{r echo = FALSE}
+knitr::include_graphics("https://i.imgur.com/jx2iYpB.png")
+```
+
 ---
+
+class: inverse, center
+#Parameters of Tendon Growth
+```{r echo = FALSE}
+knitr::include_graphics("https://i.imgur.com/uEKbnjV.png")
+```
+
+Length
+--
+<br></br>Cell number (via DAPI+ nuclear marker)
+--
+<br></br>Cross-sectional area (cells + matrix)
+--
+<br></br>Proliferation (% EdU+ nuclei)
+
+---
+
+class: inverse, center
+#Parameters of Tendon Growth
+```{r echo = FALSE}
+knitr::include_graphics("https://i.imgur.com/uEKbnjV.png")
+```
+
+<b>Length
+<br></br> Cell number (via DAPI+ nuclear marker)
+</b>
+<br></br>Cross-sectional area (cells + matrix)
+<br></br>Proliferation (% EdU+ nuclei)
+
+---
+
+#Collection Method
+
+Sectioned Limb
+--
+<br></br>Quantified growth parameters for 10 sections per limb
+--
+<br></br>Averaged values from all sections to create one value per parameter per limb
+--
+<br></br>Each value/limb is one N
+
+---
+
+```{r example-plot1, eval = FALSE}
+quant <- read_csv("https://gist.githubusercontent.com/sschlesinger/44ec0c892ce0bf0d78e750bc78e2aef7/raw/bba5617841b28de26a569c5a0dd10d2cd7933fc9/TendonQuant.csv")
+```
+
+```{r}
+glimpse(quant)
+```
+
+---
+
+#Tidied and prepared data
+
+Added a column to convert embryonic/postnatal staging to days
+--
+<br></br>Converted um to cm
+--
+<br></br>Created color palette
+
+---
+
+#Axes
+```{r echo = FALSE}
+ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Length, color=fct_reorder2(Stage,days_post_conception,Length))) +
+  labs(title = "FCU Tendon Length By Developmental Stage", x = "Stage", y = "Averaged Length (cm)") +
+  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  theme(
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    axis.title = element_text(face="bold"), 
+    title = element_text(face="bold"), 
+    axis.text = element_text(size = 10), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    axis.line.x = element_line(color = "gray30", size = .5), 
+    axis.line.y = element_line(color = "gray30", size = .5), 
+    axis.ticks = element_line(color = "gray30", size = 1)
+    )+
+  guides(colour = guide_legend(reverse=T))
+```
+
+---
+
+#Final Length Visualization
+```{r echo = FALSE}
+ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Length, color=fct_reorder2(Stage,days_post_conception,Length))) +
+  geom_jitter(position = position_jitter(height = 0, width = .1),
+              alpha = .5) + 
+  stat_summary(fun.y = median, 
+               fun.ymin = median, 
+               fun.ymax = median, 
+               geom = "crossbar", 
+               lwd = .2, # make median line thinner
+               width = .5)+ # set median line width
+  labs(title = "FCU Tendon Length By Developmental Stage", x = "Stage", y = "Averaged Length (cm)") +
+  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  theme(
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    axis.title = element_text(face="bold"), 
+    title = element_text(face="bold"), 
+    axis.text = element_text(size = 10), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    axis.line.x = element_line(color = "gray30", size = .5), 
+    axis.line.y = element_line(color = "gray30", size = .5), 
+    axis.ticks = element_line(color = "gray30", size = 1)
+    )+
+  guides(colour = guide_legend(reverse=T))
+```
+
+---
+
+```{r example-plot, eval = FALSE}
+ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Length, color=fct_reorder2(Stage,days_post_conception,Length))) +
+  geom_jitter(position = position_jitter(height = 0, width = .1),
+              alpha = .5) + 
+  stat_summary(fun.y = median, 
+               fun.ymin = median, 
+               fun.ymax = median, 
+               geom = "crossbar", 
+               lwd = .2, # make median line thinner
+               width = .5)+ # set median line width
+  labs(title = "FCU Tendon Length By Developmental Stage", x = "Stage", y = "Averaged Length (cm)") +
+  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  theme(
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    axis.title = element_text(face="bold"), 
+    title = element_text(face="bold"), 
+    axis.text = element_text(size = 10), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    axis.line.x = element_line(color = "gray30", size = .5), 
+    axis.line.y = element_line(color = "gray30", size = .5), 
+    axis.ticks = element_line(color = "gray30", size = 1)
+    )+
+  guides(colour = guide_legend(reverse=T))
+```
+
+---
+
+class: inverse, center
+#Example of previously used visualization (WHAT?)
+
+```{r echo = FALSE}
+knitr::include_graphics("https://i.imgur.com/OhghF6h.png")
+```
