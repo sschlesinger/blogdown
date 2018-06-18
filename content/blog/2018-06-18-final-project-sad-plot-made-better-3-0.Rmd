@@ -12,7 +12,328 @@ lobsters_id: ''
 meta_img: /images/image.jpg
 ---
 
-```{r echo=FALSE}
-knitr::include_url("../../slides/2018-05-16-test.html")
+Set global options
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Load libraries
+```{r load_packages, include = FALSE}
+library(here)
+library(tidyverse)
+library(dplyr)
+library(readr)
+library(beyonce)
+```
+
+Read in data
+```{r}
+quant <- read_csv("https://gist.githubusercontent.com/sschlesinger/44ec0c892ce0bf0d78e750bc78e2aef7/raw/bba5617841b28de26a569c5a0dd10d2cd7933fc9/TendonQuant.csv")
+glimpse(quant)
+```
+
+Add Column to change stage to days post conception - for graphing later
+```{r}
+quant_corr <- quant %>%
+  mutate(days_post_conception = Stage) %>%
+  mutate(days_post_conception = replace(days_post_conception, Stage == "E14.5", 14.5)) %>%
+  mutate(days_post_conception = replace(days_post_conception, Stage == "E16.5", 16.5)) %>%
+  mutate(days_post_conception = replace(days_post_conception, Stage == "E18.5", 18.5)) %>%
+  mutate(days_post_conception = replace(days_post_conception, Stage == "P0", 19)) %>%
+  mutate(days_post_conception = replace(days_post_conception, Stage == "P10", 29)) %>%
+  mutate(days_post_conception = replace(days_post_conception, Stage == "P30", 49)) %>%
+  mutate(days_post_conception = replace(days_post_conception, Stage == "P100", 119))
+```
+
+Make days_post_conception a numeric variable
+```{r}
+transform(quant_corr, days_post_conception = as.numeric(days_post_conception))
+```
+
+Convert length to cm
+```{r}
+quant_corr <- quant_corr %>%
+  mutate(Length = Length/10000)
+```
+
+Tidy Data for median
+```{r}
+quant_corr_med <- quant_corr %>%
+  group_by(Stage, days_post_conception) %>%
+  summarize(LengthMed = median(Length), DapiMed = median(Dapi), CSAMed = median(CSA), EduMed = median(Edu))
+```
+
+Create color palette
+```{r}
+Color_Cont <- beyonce_palette(21)[c(1,2,3,4,5,6)]
+```
+
+Graph Length by Stage - accurate time spacing
+```{r}
+ggplot(quant_corr, aes(x = as.numeric(days_post_conception), y = Length, color=fct_reorder2(Stage,days_post_conception,Length))) +
+#  geom_line(data=quant_corr_med, aes(x = as.numeric(days_post_conception), y = LengthMed)) +
+  geom_jitter(position = position_jitter(height = 0, width = 1),
+        alpha = .5) + 
+  stat_summary(fun.y = median, 
+        fun.ymin = median, 
+        fun.ymax = median, 
+        geom = "crossbar", 
+        lwd = .2, # make median line thinner
+        width = 5)+ # set median line width
+  labs(title = "FCU Tendon Length By Developmental Stage", x = "Days Post Conception", y = "Averaged Length (cm)") +
+  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  theme(
+      plot.background = element_rect(fill = "white"),
+      panel.background = element_rect(fill = "white"),
+      axis.title = element_text(face="bold"), 
+      title = element_text(face="bold"), 
+      axis.text = element_text(size = 10), 
+      panel.grid.major.y = element_blank(), 
+      panel.grid.major.x = element_blank(), 
+      panel.grid.minor.y = element_blank(), 
+      panel.grid.minor.x = element_blank(), 
+      axis.line.x = element_line(color = "gray30", size = .5), 
+      axis.line.y = element_line(color = "gray30", size = .5), 
+      axis.ticks = element_line(color = "gray30", size = 1)
+      ) +
+  scale_x_continuous(breaks=c(19, 49, 119))+
+  guides(colour = guide_legend(reverse=T))
+```
+
+Graph Length by Stage - Discrete time spacing
+```{r}
+ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Length, color=fct_reorder2(Stage,days_post_conception,Length))) +
+  geom_jitter(position = position_jitter(height = 0, width = .1),
+              alpha = .5) + 
+  stat_summary(fun.y = median, 
+               fun.ymin = median, 
+               fun.ymax = median, 
+               geom = "crossbar", 
+               lwd = .2, # make median line thinner
+               width = .5)+ # set median line width
+  labs(title = "FCU Tendon Length By Developmental Stage", x = "Stage", y = "Averaged Length (cm)") +
+  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  theme(
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    axis.title = element_text(face="bold"), 
+    title = element_text(face="bold"), 
+    axis.text = element_text(size = 10), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    axis.line.x = element_line(color = "gray30", size = .5), 
+    axis.line.y = element_line(color = "gray30", size = .5), 
+    axis.ticks = element_line(color = "gray30", size = 1)
+    )+
+  guides(colour = guide_legend(reverse=T))
+```
+
+
+Graph Dapi by Stage - Accurate Time Spacing
+```{r}
+ggplot(quant_corr, aes(x = as.numeric(days_post_conception), y = Dapi, color=fct_reorder2(Stage,days_post_conception, Length))) +
+  geom_jitter(position = position_jitter(height = 0, width = 1),
+        alpha = .5) + 
+  stat_summary(fun.y = median, 
+        fun.ymin = median, 
+        fun.ymax = median, 
+        geom = "crossbar", 
+        lwd = .2, # make median line thinner
+        width = 5)+ # set median line width
+  labs(title = "FCU Tendon Cells per Section By Developmental Stage", x = "Days Post Conception", y = "Averaged # Cells per Section") +
+  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  theme(
+      plot.background = element_rect(fill = "white"),
+      panel.background = element_rect(fill = "white"),
+      axis.title = element_text(face="bold"), 
+      title = element_text(face="bold"), 
+      axis.text = element_text(size = 10), 
+      panel.grid.major.y = element_blank(), 
+      panel.grid.major.x = element_blank(), 
+      panel.grid.minor.y = element_blank(), 
+      panel.grid.minor.x = element_blank(), 
+      axis.line.x = element_line(color = "gray30", size = .5), 
+      axis.line.y = element_line(color = "gray30", size = .5), 
+      axis.ticks = element_line(color = "gray30", size = 1)
+      ) +
+  scale_x_continuous(breaks=c(19, 49, 119))+
+  coord_cartesian(ylim=c(0,130)) +
+  guides(colour = guide_legend(reverse=T))
+```
+
+Graph Dapi by Stage - discrete time spacing
+```{r}
+ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Dapi, color=fct_reorder2(Stage,days_post_conception,Length))) +
+  geom_jitter(position = position_jitter(height = 0, width = .1),
+              alpha = .5) + 
+  stat_summary(fun.y = median, 
+               fun.ymin = median, 
+               fun.ymax = median, 
+               geom = "crossbar", 
+               lwd = .2, # make median line thinner
+               width = .5)+ # set median line width
+  labs(title = "FCU Tendon Cells per Section by Developmental Stage", x = "Stage", y = "Averaged # Cells per Section") +
+  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  theme(
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    axis.title = element_text(face="bold"), 
+    title = element_text(face="bold"), 
+    axis.text = element_text(size = 10), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    axis.line.x = element_line(color = "gray30", size = .5), 
+    axis.line.y = element_line(color = "gray30", size = .5), 
+    axis.ticks = element_line(color = "gray30", size = 1)
+    )+
+  coord_cartesian(ylim=c(0,130)) +
+  guides(colour = guide_legend(reverse=T))
+```
+
+Graph CSA by Stage - Accurate Time Spacing
+```{r}
+ggplot(quant_corr, aes(x = as.numeric(days_post_conception), y = CSA, color=fct_reorder2(Stage,days_post_conception, Length))) +
+  geom_jitter(position = position_jitter(height = 0, width = 1),
+        alpha = .5) + 
+  stat_summary(fun.y = median, 
+        fun.ymin = median, 
+        fun.ymax = median, 
+        geom = "crossbar", 
+        lwd = .2, # make median line thinner
+        width = 5)+ # set median line width
+  labs(title = "FCU Tendon Cross-sectional Area By Developmental Stage", x = "Days Post Conception", y = "Averaged Cross-sectional Area (um^3)") +
+  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  theme(
+      plot.background = element_rect(fill = "white"),
+      panel.background = element_rect(fill = "white"),
+      axis.title = element_text(face="bold"), 
+      title = element_text(face="bold"), 
+      axis.text = element_text(size = 10), 
+      panel.grid.major.y = element_blank(), 
+      panel.grid.major.x = element_blank(), 
+      panel.grid.minor.y = element_blank(), 
+      panel.grid.minor.x = element_blank(), 
+      axis.line.x = element_line(color = "gray30", size = .5), 
+      axis.line.y = element_line(color = "gray30", size = .5), 
+      axis.ticks = element_line(color = "gray30", size = 1)
+      ) +
+  scale_x_continuous(breaks=c(19, 49, 119))+
+  coord_cartesian(ylim=c(0,40000)) +
+  guides(colour = guide_legend(reverse=T))
+```
+
+Graph CSA by Stage - discrete time spacing
+```{r}
+ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = CSA, color=fct_reorder2(Stage,days_post_conception,Length))) +
+  geom_jitter(position = position_jitter(height = 0, width = .1),
+              alpha = .5) + 
+  stat_summary(fun.y = median, 
+               fun.ymin = median, 
+               fun.ymax = median, 
+               geom = "crossbar", 
+               lwd = .2, # make median line thinner
+               width = .5)+ # set median line width
+  labs(title = "FCU Tendon Cross-sectional Area by Developmental Stage", x = "Stage", y = "Averaged Cross-sectional Area (um^3)") +
+  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  theme(
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    axis.title = element_text(face="bold"), 
+    title = element_text(face="bold"), 
+    axis.text = element_text(size = 10), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    axis.line.x = element_line(color = "gray30", size = .5), 
+    axis.line.y = element_line(color = "gray30", size = .5), 
+    axis.ticks = element_line(color = "gray30", size = 1)
+    )+
+  coord_cartesian(ylim=c(0,40000)) +
+  guides(colour = guide_legend(reverse=T))
+```
+
+Graph Edu by Stage - Accurate Time Spacing
+```{r}
+ggplot(quant_corr, aes(x = as.numeric(days_post_conception), y = Edu, color=fct_reorder2(Stage,days_post_conception, Length))) +
+  geom_jitter(position = position_jitter(height = 0, width = 1),
+        alpha = .5) + 
+  stat_summary(fun.y = median, 
+        fun.ymin = median, 
+        fun.ymax = median, 
+        geom = "crossbar", 
+        lwd = .2, # make median line thinner
+        width = 5)+ # set median line width
+  labs(title = "FCU Tendon Cross-sectional Area By Developmental Stage", x = "Days Post Conception", y = "Averaged # Proliferating Cells (% Edu+)") +
+  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  theme(
+      plot.background = element_rect(fill = "white"),
+      panel.background = element_rect(fill = "white"),
+      axis.title = element_text(face="bold"), 
+      title = element_text(face="bold"), 
+      axis.text = element_text(size = 10), 
+      panel.grid.major.y = element_blank(), 
+      panel.grid.major.x = element_blank(), 
+      panel.grid.minor.y = element_blank(), 
+      panel.grid.minor.x = element_blank(), 
+      axis.line.x = element_line(color = "gray30", size = .5), 
+      axis.line.y = element_line(color = "gray30", size = .5), 
+      axis.ticks = element_line(color = "gray30", size = 1)
+      ) +
+  scale_x_continuous(breaks=c(19, 49, 119))+
+#  coord_cartesian(ylim=c(0,25)) +
+  guides(colour = guide_legend(reverse=T))
+```
+
+Graph Edu by Stage - discrete time spacing
+```{r}
+ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Edu, color=fct_reorder2(Stage,days_post_conception,Length))) +
+  geom_jitter(position = position_jitter(height = 0, width = .1),
+              alpha = .5) + 
+  stat_summary(fun.y = median, 
+               fun.ymin = median, 
+               fun.ymax = median, 
+               geom = "crossbar", 
+               lwd = .2, # make median line thinner
+               width = .5)+ # set median line width
+  labs(title = "FCU Tendon Cross-sectional Area by Developmental Stage", x = "Stage", y = "Averaged # Proliferating Cells (% Edu+)") +
+  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  theme(
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    axis.title = element_text(face="bold"), 
+    title = element_text(face="bold"), 
+    axis.text = element_text(size = 10), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    axis.line.x = element_line(color = "gray30", size = .5), 
+    axis.line.y = element_line(color = "gray30", size = .5), 
+    axis.ticks = element_line(color = "gray30", size = 1)
+    )+
+  coord_cartesian(ylim=c(0,25)) +
+  guides(colour = guide_legend(reverse=T))
+```
+
+These visualizations are an incredible improvement over my previous attempts, I still have a hard time determining the best way to present the data and walking someone through it.There are a lot of moving variables so I think the best way it address a very specific question and show only the bare minimum.
+
+Type of graph: These are Stripcharts, which display multiple Ns per timepoint with a median line provided to help summarize the timepoint.
+
+Description of data: These data are data I have collected. I sectioned mouse limbs expressing an endogenous fluorescent tendon cell marker at varying timepoints and stained for EdU. I quantified growth parameters of each section (Nuclei, CSA, EdU) and determined length as the distance between the first section with visible tendon and the first section with visible muscle. The sections' values were averaged together to become one N.
+
+Description of audience: This audience may be someone with good biological knowledge. They may or may not be in the tendon field.
+
+Representation Description: The individual visualizations to not say much - they can show trending changes over time. In conjunction with each other, though, they can begin to show more interesting patterns about overall growth. For instance, cell #/section stays relatively steady even though length increases over time, which suggests that cells are added at a rate proportional to the increase in length and the cells are added along the axis of force.
+
+How to read it & What to look for: First I would appreciate the patterns evident in each individual plot. For instance, proliferation (as determined by EdU staining) decreases over time. Length steadily increases. The grand majority of CSA is added in the postnatal stages. The number of cells per section stays relatively steady. Then I'd ask questions and determine which graphs can help me answer that question. For instance, how many cells are added between time X and time X+? Well, if we see that the number of cells remains similar then we can use the increase in length to directly infer the fold change of cells numbers over that time.
+
+Presentation tips: I used color to help differentiate between embryonic and postnatal stages. I think it would be best to first introduce the methodology of data collection, and then use the length visualization as an example of how the values are graphed. Then each graph can be introduced separately, before finally asking more specific questions that can be answered by a combination of graphs.
+
+Variations and alternatives: Any sort of density or box graph could be used as an alternative.
+
+Methods: For these graphs I first tidied the data so that developmental stages could be graphed in order and by accurately spaced timing. I then graphed the points, starting with a single growth paramenter, by developmental stage and added a median line for each stage. I colored by stage. Finally I repeated for the other growth parameters.

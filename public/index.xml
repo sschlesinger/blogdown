@@ -12,12 +12,24 @@
     
     
     <item>
+      <title>Final Project</title>
+      <link>/projects/final-project/</link>
+      <pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/projects/final-project/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Final Project - Sad Plot Made Better 3.0</title>
       <link>/blog/final-project-sad-plot-made-better-3-0/</link>
       <pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate>
       
       <guid>/blog/final-project-sad-plot-made-better-3-0/</guid>
-      <description></description>
+      <description>Set global options
+Load libraries
+Read in data
+quant &amp;lt;- read_csv(&amp;quot;https://gist.githubusercontent.com/sschlesinger/44ec0c892ce0bf0d78e750bc78e2aef7/raw/bba5617841b28de26a569c5a0dd10d2cd7933fc9/TendonQuant.csv&amp;quot;)## Parsed with column specification:## cols(## Mouse = col_character(),## Stage = col_character(),## Dapi = col_double(),## Edu = col_double(),## CSA = col_integer(),## Length = col_integer()## )glimpse(quant)## Observations: 25## Variables: 6## $ Mouse &amp;lt;chr&amp;gt; &amp;quot;EH89-2&amp;quot;, &amp;quot;EH89-4&amp;quot;, &amp;quot;EH89-5&amp;quot;, &amp;quot;ER93-1&amp;quot;, &amp;quot;FI01-1&amp;quot;, &amp;quot;LW02...## $ Stage &amp;lt;chr&amp;gt; &amp;quot;E14.5&amp;quot;, &amp;quot;E14.5&amp;quot;, &amp;quot;E14.5&amp;quot;, &amp;quot;E14.5&amp;quot;, &amp;quot;E16.5&amp;quot;, &amp;quot;E16.</description>
     </item>
     
     <item>
@@ -74,7 +86,7 @@ baby_letters &amp;lt;- babynames %&amp;gt;%mutate(first_letter=str_sub(name, 1,
       <pubDate>Wed, 19 Aug 2015 20:29:37 -0700</pubDate>
       
       <guid>/projects/projects/</guid>
-      <description>You can find my final project slides under the blog posts.</description>
+      <description>You can find my final project slides below. You can find the write-up of my final project as a blog post.</description>
     </item>
     
     <item>
@@ -96,15 +108,6 @@ baby_letters &amp;lt;- babynames %&amp;gt;%mutate(first_letter=str_sub(name, 1,
  The MIT License (MIT)
 Copyright &amp;copy; 2015 Nishanth Shanmughamnishanth.gerrard@gmail.com
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &amp;ldquo;Software&amp;rdquo;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</description>
-    </item>
-    
-    <item>
-      <title>Saundra Schlesinger CS631 Final Project</title>
-      <link>/projects/slides/2018-05-16-test/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/projects/slides/2018-05-16-test/</guid>
-      <description>knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.width = 10.5, fig.height = 4, comment = NA, rows.print = 16)class: inverse, middle, center # This is Slide 1 ## This is slide 1 —</description>
     </item>
     
   </channel>

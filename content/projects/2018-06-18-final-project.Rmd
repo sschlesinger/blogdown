@@ -1,0 +1,18 @@
+---
+title: Final Project
+author: Saundra Schlesinger
+date: '2018-06-18'
+slug: final-project
+categories:
+  - R
+tags: []
+description: Desc
+hacker_news_id: ''
+lobsters_id: ''
+meta_img: /images/image.jpg
+---
+
+```{r echo=FALSE}
+knitr::include_url("../../slides/2018-06-20-finalslides.html")
+```
+
