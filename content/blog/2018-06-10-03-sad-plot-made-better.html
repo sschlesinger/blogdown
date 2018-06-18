@@ -1,0 +1,134 @@
+---
+title: 03 - Sad Plot Made Better
+author: Saundra Schlesinger
+date: '2018-06-10'
+slug: 03-sad-plot-made-better
+categories:
+  - R
+tags: []
+description: Desc
+hacker_news_id: ''
+lobsters_id: ''
+meta_img: /images/image.jpg
+---
+
+
+
+<pre class="r"><code>library(readr)
+moma &lt;- read_csv(&quot;http://bit.ly/cs631-moma&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   .default = col_character(),
+##   artist_birth_year = col_integer(),
+##   artist_death_year = col_double(),
+##   num_artists = col_integer(),
+##   n_female_artists = col_integer(),
+##   n_male_artists = col_integer(),
+##   year_acquired = col_double(),
+##   year_created = col_integer(),
+##   depth_cm = col_double(),
+##   height_cm = col_double(),
+##   width_cm = col_double(),
+##   purchase = col_logical(),
+##   gift = col_logical(),
+##   exchange = col_logical()
+## )</code></pre>
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+<p>CHALLENGE 4: 8 Plot painting dimensions</p>
+<pre class="r"><code>#Get dimenions in feet
+moma_ft &lt;- moma %&gt;%
+  mutate(height_ft= (height_cm/2.24)/12, width_ft= (width_cm/2.24)/12,
+        dimension = case_when(height_ft &gt; width_ft ~ &quot;tall&quot;,
+                       height_ft == width_ft ~ &quot;square&quot;,
+                       height_ft &lt; width_ft ~ &quot;wide&quot;))</code></pre>
+<pre class="r"><code>ggplot(moma_ft, aes(x=width_ft, y=height_ft, color=dimension)) +
+  geom_point(alpha = 0.2)+
+  #geom_smooth(aes(width_ft, height_ft), method=lm, se=FALSE) + #add regression lines - took this out to add manual lines
+  geom_segment(aes(x = 0, y = 0, xend = 24, yend = 16), color=&quot;#B14CF0&quot;) +
+  geom_segment(aes(x = 0, y = 0, xend = 11, yend = 14), color=&quot;#FF9900&quot;) +
+  annotate(&#39;text&#39;, x=12, y=13, label=&quot;Taller \nthan wide&quot;, size = 4, color=&quot;#FF9900&quot;) +
+  annotate(&#39;text&#39;, x=15, y=12, label=&quot;Wider \nthan tall&quot;, size = 4, color=&quot;#B14CF0&quot;) +
+  labs(x = &quot;Width&quot;, y = &quot;Height&quot;)+
+  ggtitle(&quot;MoMA Paintings, Tall and Wide&quot;, subtitle = &quot;Dimensions of over 2,000 paintings in the collection, excluding six \npieces over 25 feet wide and one piece over 15 feet tall&quot;) +
+  scale_y_continuous(expand = c(0, 0), breaks = seq(0, 15, 5)) +
+  scale_x_continuous(expand = c(0, 0), breaks = seq(0, 20, 5)) +
+  coord_cartesian(xlim = c(0, 25), ylim = c(0, 16)) +
+  scale_colour_manual(name = &quot;&quot;, values = c(&quot;Gray50&quot;, &quot;#FF9900&quot;, &quot;#B14CF0&quot;)) +
+  theme(legend.position=&quot;bottom&quot;,
+    text=element_text(family=&quot;Arial&quot;),
+    legend.background=element_rect(fill=&quot;gray95&quot;),
+    plot.background = element_rect(fill = &quot;gray95&quot;),
+    panel.background = element_rect(fill = &quot;gray95&quot;),
+    axis.title = element_text(face=&quot;bold&quot;), #make axes titles bold
+    title = element_text(face=&quot;bold&quot;), #make title bold
+    axis.text = element_text(size = 10), #set axis font size
+    panel.grid.major.y = element_line(color = &quot;gray80&quot;), #adds back in major gridlines
+    panel.grid.major.x = element_line(color = &quot;gray80&quot;), #adds back in major gridlines
+    panel.grid.minor.y = element_blank(), #removes minor gridlines
+    panel.grid.minor.x = element_blank(), #removes minor gridlines
+    axis.line.x = element_line(color = &quot;gray20&quot;, size = .5), #change size and color of x-axis
+    axis.line.y = element_line(color = &quot;gray20&quot;, size = .5), #change size and color of y-axis
+    legend.key = element_blank(), #remove white moxes around legend labels
+    axis.ticks = element_line(color = &quot;gray80&quot;, size = 1)) #change size and color of tick marks on y-axis</code></pre>
+<pre><code>## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database</code></pre>
+<pre><code>## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
+## $y, : font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
+## $y, : font family not found in Windows font database</code></pre>
+<pre><code>## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database</code></pre>
+<p><img src="/blog/2018-06-10-03-sad-plot-made-better_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<ol style="list-style-type: decimal">
+<li><p>Type of graph: This is a scatter plot with a line graph superimposed.</p></li>
+<li><p>Description of data: These data are from MOMA, and include information about pieces in the collection, including artist, year made and year obtained, and dimensions.</p></li>
+<li><p>Description of audience: This would be an audience interested in art and interested in the Moma collection. It could also be relevant to museum curators of how to display pieces. There are clearly a number of very wide pieces over tall, so it may be optimal to reserve large horizontal spaces of wall for these pieces.</p></li>
+<li><p>Representation Description: I am trying to show the distribution of dimensions of paintings in the Moma collection. It is colored based on dimensionality, with dimension orientation highlighted.</p></li>
+<li><p>How to read it &amp; What to look for: Notice that while there are dimension differences, the line highlights that many fall within similar aspect ratios, whether they’re portrait or landscape oriented. In addition, there are more very wide pieces than very tall, and the widest pieces are longer than the height of the tallest pieces.</p></li>
+<li><p>Presentation tips: Annotation could be added to highlight specific pieces of interest.</p></li>
+<li><p>Variations and alternatives: A density plot could be an interesting alternative, as it would demonstrate key dimensions that are popular.</p></li>
+<li><p>Methods: For this graph I extracted the dimensions of all paintings and converted to feet. Then I plotted height against width. Finally I originally added regression lines for the dimensions but that did not look like the original so I instead created artificial lines to approximate the regression lines. Finally I added annotations and colored by dimension.</p></li>
+</ol>

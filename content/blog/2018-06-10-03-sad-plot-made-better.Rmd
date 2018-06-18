@@ -1,0 +1,98 @@
+---
+title: 03 - Sad Plot Made Better
+author: Saundra Schlesinger
+date: '2018-06-10'
+slug: 03-sad-plot-made-better
+categories:
+  - R
+tags: []
+description: Desc
+hacker_news_id: ''
+lobsters_id: ''
+meta_img: /images/image.jpg
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load_packages, include = FALSE}
+library(here)
+library(tidyverse)
+library(extrafont)
+library(readr)
+library(dplyr)
+```
+
+```{r}
+library(readr)
+moma <- read_csv("http://bit.ly/cs631-moma")
+```
+
+CHALLENGE 4: 8 Plot painting dimensions
+
+```{r}
+#Get dimenions in feet
+moma_ft <- moma %>%
+  mutate(height_ft= (height_cm/2.24)/12, width_ft= (width_cm/2.24)/12,
+        dimension = case_when(height_ft > width_ft ~ "tall",
+                       height_ft == width_ft ~ "square",
+                       height_ft < width_ft ~ "wide"))
+```
+
+```{r}
+ggplot(moma_ft, aes(x=width_ft, y=height_ft, color=dimension)) +
+  geom_point(alpha = 0.2)+
+  #geom_smooth(aes(width_ft, height_ft), method=lm, se=FALSE) + #add regression lines - took this out to add manual lines
+  geom_segment(aes(x = 0, y = 0, xend = 24, yend = 16), color="#B14CF0") +
+  geom_segment(aes(x = 0, y = 0, xend = 11, yend = 14), color="#FF9900") +
+  annotate('text', x=12, y=13, label="Taller \nthan wide", size = 4, color="#FF9900") +
+  annotate('text', x=15, y=12, label="Wider \nthan tall", size = 4, color="#B14CF0") +
+  labs(x = "Width", y = "Height")+
+  ggtitle("MoMA Paintings, Tall and Wide", subtitle = "Dimensions of over 2,000 paintings in the collection, excluding six \npieces over 25 feet wide and one piece over 15 feet tall") +
+  scale_y_continuous(expand = c(0, 0), breaks = seq(0, 15, 5)) +
+  scale_x_continuous(expand = c(0, 0), breaks = seq(0, 20, 5)) +
+  coord_cartesian(xlim = c(0, 25), ylim = c(0, 16)) +
+  scale_colour_manual(name = "", values = c("Gray50", "#FF9900", "#B14CF0")) +
+  theme(legend.position="bottom",
+    text=element_text(family="Arial"),
+    legend.background=element_rect(fill="gray95"),
+    plot.background = element_rect(fill = "gray95"),
+    panel.background = element_rect(fill = "gray95"),
+    axis.title = element_text(face="bold"), #make axes titles bold
+    title = element_text(face="bold"), #make title bold
+    axis.text = element_text(size = 10), #set axis font size
+    panel.grid.major.y = element_line(color = "gray80"), #adds back in major gridlines
+    panel.grid.major.x = element_line(color = "gray80"), #adds back in major gridlines
+    panel.grid.minor.y = element_blank(), #removes minor gridlines
+    panel.grid.minor.x = element_blank(), #removes minor gridlines
+    axis.line.x = element_line(color = "gray20", size = .5), #change size and color of x-axis
+    axis.line.y = element_line(color = "gray20", size = .5), #change size and color of y-axis
+    legend.key = element_blank(), #remove white moxes around legend labels
+    axis.ticks = element_line(color = "gray80", size = 1)) #change size and color of tick marks on y-axis
+```
+
+1) Type of graph:
+This is a scatter plot with a line graph superimposed.
+
+2) Description of data:
+These data are from MOMA, and include information about pieces in the collection, including artist, year made and year obtained, and dimensions.
+
+3) Description of audience:
+This would be an audience interested in art and interested in the Moma collection. It could also be relevant to museum curators of how to display pieces. There are clearly a number of very wide pieces over tall, so it may be optimal to reserve large horizontal spaces of wall for these pieces.
+
+4) Representation Description:
+I am trying to show the distribution of dimensions of paintings in the Moma collection. It is colored based on dimensionality, with dimension orientation highlighted.
+
+5) How to read it & What to look for: 
+Notice that while there are dimension differences, the line highlights that many fall within similar aspect ratios, whether they're portrait or landscape oriented. In addition, there are more very wide pieces than very tall, and the widest pieces are longer than the height of the tallest pieces.
+
+6) Presentation tips: 
+Annotation could be added to highlight specific pieces of interest.
+
+7) Variations and alternatives: 
+A density plot could be an interesting alternative, as it would demonstrate key dimensions that are popular.
+
+8) Methods:
+For this graph I extracted the dimensions of all paintings and converted to feet. Then I plotted height against width. Finally I originally added regression lines for the dimensions but that did not look like the original so I instead created artificial lines to approximate the regression lines. Finally I added annotations and colored by dimension. 
+

@@ -6,19 +6,10 @@
     <description>Recent content in Blog on Schlesinger CS631</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Wed, 13 Jun 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 10 Jun 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Take a sad plot and make it better - TEST</title>
-      <link>/blog/take-a-sad-plot-and-make-it-better-test/</link>
-      <pubDate>Wed, 13 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/take-a-sad-plot-and-make-it-better-test/</guid>
-      <description>library(gapminder)library(tidyverse)## -- Attaching packages ------------------------------------------------------------------------------------------------ tidyverse 1.2.1 --## v ggplot2 2.2.1 v purrr 0.2.4## v tibble 1.4.2 v dplyr 0.7.5## v tidyr 0.8.1 v stringr 1.3.1## v readr 1.1.1 v forcats 0.3.0## -- Conflicts --------------------------------------------------------------------------------------------------- tidyverse_conflicts() --## x dplyr::filter() masks stats::filter()## x dplyr::lag() masks stats::lag()library(dplyr)library(ggplot2)library(readr)Gapminder Challenge Pick at least two of the tasks below from the task menu and approach each with a table and figure.</description>
-    </item>
     
     <item>
       <title>01 - Sad Plot Made Better</title>
@@ -29,6 +20,24 @@
       <description>Call In Libraries and Data
 library(tidyverse)## -- Attaching packages ------------------------------------------------------------------------------------------------ tidyverse 1.2.1 --## v ggplot2 2.2.1 v purrr 0.2.4## v tibble 1.4.2 v dplyr 0.7.5## v tidyr 0.8.1 v stringr 1.3.1## v readr 1.1.1 v forcats 0.3.0## -- Conflicts --------------------------------------------------------------------------------------------------- tidyverse_conflicts() --## x dplyr::filter() masks stats::filter()## x dplyr::lag() masks stats::lag()library(dplyr)library(ggplot2)library(readr)library(babynames)library(stringr)Add column of first letters
 baby_letters &amp;lt;- babynames %&amp;gt;%mutate(first_letter=str_sub(name, 1,1))Add up proportion for each letter by year + sex</description>
+    </item>
+    
+    <item>
+      <title>02 - Sad Plot Made Better</title>
+      <link>/blog/02-sad-plot-made-better/</link>
+      <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/02-sad-plot-made-better/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>03 - Sad Plot Made Better</title>
+      <link>/blog/03-sad-plot-made-better/</link>
+      <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/03-sad-plot-made-better/</guid>
+      <description>library(readr)moma &amp;lt;- read_csv(&amp;quot;http://bit.ly/cs631-moma&amp;quot;)## Parsed with column specification:## cols(## .default = col_character(),## artist_birth_year = col_integer(),## artist_death_year = col_double(),## num_artists = col_integer(),## n_female_artists = col_integer(),## n_male_artists = col_integer(),## year_acquired = col_double(),## year_created = col_integer(),## depth_cm = col_double(),## height_cm = col_double(),## width_cm = col_double(),## purchase = col_logical(),## gift = col_logical(),## exchange = col_logical()## )## See spec(.</description>
     </item>
     
   </channel>

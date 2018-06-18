@@ -13,6 +13,10 @@ meta_img: /images/image.jpg
 ---
 
 Call In Libraries and Data
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 ```{r}
 library(tidyverse)
 library(dplyr)
