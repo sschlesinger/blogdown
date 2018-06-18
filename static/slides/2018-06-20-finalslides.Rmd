@@ -11,6 +11,11 @@ output:
       countIncrementalSlides: false
 ---
 
+```{r echo = FALSE, include = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+                      fig.width = 10.5, fig.height = 6, 
+                      comment = NA, rows.print = 16)
+```
 
 ```{r load_packages, include = FALSE, echo = FALSE}
 library(here)
@@ -21,12 +26,12 @@ library(readr)
 library(beyonce)
 ```
 
-```{r echo = FALSE}
+```{r echo = FALSE, include=FALSE}
 quant <- read_csv("https://gist.githubusercontent.com/sschlesinger/44ec0c892ce0bf0d78e750bc78e2aef7/raw/bba5617841b28de26a569c5a0dd10d2cd7933fc9/TendonQuant.csv")
 glimpse(quant)
 ```
 
-```{r echo = FALSE}
+```{r echo = FALSE, include=FALSE}
 quant_corr <- quant %>%
   mutate(days_post_conception = Stage) %>%
   mutate(days_post_conception = replace(days_post_conception, Stage == "E14.5", 14.5)) %>%
@@ -38,16 +43,16 @@ quant_corr <- quant %>%
   mutate(days_post_conception = replace(days_post_conception, Stage == "P100", 119))
 ```
 
-```{r echo = FALSE}
+```{r echo = FALSE, include=FALSE}
 transform(quant_corr, days_post_conception = as.numeric(days_post_conception))
 ```
 
-```{r echo = FALSE}
+```{r echo = FALSE, include=FALSE}
 quant_corr <- quant_corr %>%
   mutate(Length = Length/10000)
 ```
 
-```{r echo = FALSE}
+```{r echo = FALSE, include=FALSE}
 Color_Cont <- beyonce_palette(21)[c(1,2,3,4,5,6)]
 ```
 
@@ -146,6 +151,38 @@ ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y =
 
 ---
 
+```{r echo = FALSE}
+ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Length, color=fct_reorder2(Stage,days_post_conception,Length))) +
+  geom_jitter(position = position_jitter(height = 0, width = .1),
+              alpha = .5) + 
+  stat_summary(fun.y = median, 
+               fun.ymin = median, 
+               fun.ymax = median, 
+               geom = "crossbar", 
+               lwd = .2, # make median line thinner
+               width = .5)+ # set median line width
+  labs(title = "FCU Tendon Length By Developmental Stage", x = "Stage", y = "Averaged Length (cm)") +
+  scale_color_manual(name="Stage", values=c("white", "white", "white", "white", "white", "lightseagreen"))+
+  theme(
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    axis.title = element_text(face="bold"), 
+    title = element_text(face="bold"), 
+    axis.text = element_text(size = 10), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    axis.line.x = element_line(color = "gray30", size = .5), 
+    axis.line.y = element_line(color = "gray30", size = .5), 
+    axis.ticks = element_line(color = "gray30", size = 1)
+    )+
+  coord_cartesian(ylim=c(0,0.8)) +
+  guides(colour = guide_legend(reverse=T))
+```
+
+---
+
 #Final Length Visualization
 ```{r echo = FALSE}
 ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Length, color=fct_reorder2(Stage,days_post_conception,Length))) +
@@ -175,20 +212,25 @@ ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y =
     )+
   guides(colour = guide_legend(reverse=T))
 ```
+
 ---
 
+<small>
 ```{r example-plot, eval = FALSE}
-ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Length, color=fct_reorder2(Stage,days_post_conception,Length))) +
-  geom_jitter(position = position_jitter(height = 0, width = .1),
-              alpha = .5) + 
-  stat_summary(fun.y = median, 
+ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Length, #<<
+  color=fct_reorder2(Stage,days_post_conception,Length))) + #<<
+  geom_jitter( #<<
+      position = position_jitter(height = 0, width = .1), 
+      alpha = .5) + 
+  stat_summary(fun.y = median, #<<
                fun.ymin = median, 
                fun.ymax = median, 
                geom = "crossbar", 
                lwd = .2, # make median line thinner
                width = .5)+ # set median line width
-  labs(title = "FCU Tendon Length By Developmental Stage", x = "Stage", y = "Averaged Length (cm)") +
-  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  labs(title = "FCU Tendon Length By Developmental Stage", 
+       x = "Stage", y = "Averaged Length (cm)") +
+  scale_color_manual(name="Stage", values=c(Color_Cont))+ #<<
   theme(
     plot.background = element_rect(fill = "white"),
     panel.background = element_rect(fill = "white"),
@@ -203,6 +245,41 @@ ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y =
     axis.line.y = element_line(color = "gray30", size = .5), 
     axis.ticks = element_line(color = "gray30", size = 1)
     )+
+  guides(colour = guide_legend(reverse=T))
+```
+</small>
+
+---
+
+#Continuous rather than Discrete
+```{r echo = FALSE}
+ggplot(quant_corr, aes(x = as.numeric(days_post_conception), y = Length, color=fct_reorder2(Stage,days_post_conception,Length))) +
+#  geom_line(data=quant_corr_med, aes(x = as.numeric(days_post_conception), y = LengthMed)) +
+  geom_jitter(position = position_jitter(height = 0, width = 1),
+        alpha = .5) + 
+  stat_summary(fun.y = median, 
+        fun.ymin = median, 
+        fun.ymax = median, 
+        geom = "crossbar", 
+        lwd = .2, # make median line thinner
+        width = 5)+ # set median line width
+  labs(title = "FCU Tendon Length By Developmental Stage", x = "Days Post Conception", y = "Averaged Length (cm)") +
+  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  theme(
+      plot.background = element_rect(fill = "white"),
+      panel.background = element_rect(fill = "white"),
+      axis.title = element_text(face="bold"), 
+      title = element_text(face="bold"), 
+      axis.text = element_text(size = 10), 
+      panel.grid.major.y = element_blank(), 
+      panel.grid.major.x = element_blank(), 
+      panel.grid.minor.y = element_blank(), 
+      panel.grid.minor.x = element_blank(), 
+      axis.line.x = element_line(color = "gray30", size = .5), 
+      axis.line.y = element_line(color = "gray30", size = .5), 
+      axis.ticks = element_line(color = "gray30", size = 1)
+      ) +
+  scale_x_continuous(breaks=c(19, 49, 119))+
   guides(colour = guide_legend(reverse=T))
 ```
 
