@@ -12,3 +12,7 @@ lobsters_id: ''
 meta_img: /images/image.jpg
 ---
 
+```{r echo=FALSE}
+knitr::include_url("../../slides/2018-05-16-test.html")
+```
+
