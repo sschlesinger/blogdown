@@ -1147,7 +1147,7 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
     
     <p>CHALLENGE #3</p>
 <pre class="r"><code>#Read in new dataset, post-1981 males only with post-IFOCE TRUE/FALSE column
-hdm_affil &lt;- read_csv(here::here(&quot;Week1Lab&quot;, &quot;hot_dog_contest_with_affiliation.csv&quot;), 
+hdm_affil &lt;- read_csv((&quot;https://gist.githubusercontent.com/sschlesinger/3a846e9f56eb6603471cce60181ac2c8/raw/3a2e4039f5bf958344ce5a8db97a72576624c57a/hot_dog_contest_with_affiliation.csv&quot;), 
     col_types = cols(
       affiliated = col_factor(levels = NULL), 
       gender = col_factor(levels = NULL)
@@ -1192,7 +1192,7 @@ affil_plot&lt;- ggplot(hdm_affil, aes(x = year, y = num_eaten, fill=affiliated))
   scale_fill_manual(values=c(&quot;#E9602B&quot;, &quot;#2277A0&quot;, &quot;#CCB683&quot;), name=&quot;IFOCE-affiliation&quot;) #change colors and legend title</code></pre>
 <p>FINAL FREE-FOR-ALL PLOT</p>
 <p>Get female data</p>
-<pre class="r"><code>hdm_females &lt;- read_csv(here::here(&quot;data&quot;, &quot;hot_dog_contest_with_affiliation.csv&quot;), 
+<pre class="r"><code>hdm_females &lt;- read_csv((&quot;https://gist.githubusercontent.com/sschlesinger/3a846e9f56eb6603471cce60181ac2c8/raw/3a2e4039f5bf958344ce5a8db97a72576624c57a/hot_dog_contest_with_affiliation.csv&quot;), 
     col_types = cols(
       affiliated = col_factor(levels = NULL), 
       gender = col_factor(levels = NULL)
