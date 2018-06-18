@@ -3,4 +3,4 @@ date = "2015-08-19T20:29:37-07:00"
 title = "Projects"
 +++
 
-Here is my final project data vizualization: [linkname](slides/slides.html)
+[Click here for a slide walkthrough of my final project data vizualization](slides/slides.html)
