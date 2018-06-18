@@ -41,16 +41,6 @@ baby_letters &amp;lt;- babynames %&amp;gt;%mutate(first_letter=str_sub(name, 1,
     </item>
     
     <item>
-      <title>02 - Sad Plot Made Better</title>
-      <link>/blog/02-sad-plot-made-better/</link>
-      <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/02-sad-plot-made-better/</guid>
-      <description>CHALLENGE #3
-#Read in new dataset, post-1981 males only with post-IFOCE TRUE/FALSE columnhdm_affil &amp;lt;- read_csv(here::here(&amp;quot;Week1Lab&amp;quot;, &amp;quot;hot_dog_contest_with_affiliation.csv&amp;quot;), col_types = cols(affiliated = col_factor(levels = NULL), gender = col_factor(levels = NULL))) %&amp;gt;% mutate(post_ifoce = year &amp;gt;= 1997) %&amp;gt;% filter(year &amp;gt;= 1981 &amp;amp; gender == &amp;quot;male&amp;quot;) glimpse(hdm_affil)## Observations: 37## Variables: 6## $ year &amp;lt;int&amp;gt; 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 200...## $ gender &amp;lt;fct&amp;gt; male, male, male, male, male, male, male, male, mal.</description>
-    </item>
-    
-    <item>
       <title>03 - Sad Plot Made Better</title>
       <link>/blog/03-sad-plot-made-better/</link>
       <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
