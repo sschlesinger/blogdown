@@ -1,0 +1,14 @@
+---
+title: 01 - Sad Plot Made Better
+author: Saundra Schlesinger
+date: '2018-06-10'
+slug: 01-sad-plot-made-better
+categories:
+  - R
+tags: []
+description: Desc
+hacker_news_id: ''
+lobsters_id: ''
+meta_img: /images/image.jpg
+---
+
