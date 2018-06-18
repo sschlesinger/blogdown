@@ -11,9 +11,11 @@ hacker_news_id: ''
 lobsters_id: ''
 meta_img: /images/image.jpg
 ---
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
 ```{r load_packages, include = FALSE}
 library(here)
 library(tidyverse)
