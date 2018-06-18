@@ -175,7 +175,6 @@ ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y =
     )+
   guides(colour = guide_legend(reverse=T))
 ```
-
 ---
 
 ```{r example-plot, eval = FALSE}
