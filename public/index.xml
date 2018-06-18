@@ -17,8 +17,7 @@
       <pubDate>Wed, 13 Jun 2018 00:00:00 +0000</pubDate>
       
       <guid>/about/</guid>
-      <description>With this theme, it is possible to add small sections that only contains one page like this. It will automatically appears in the header, at the end.
-Along with Ford Prefect, Dent barely escapes the Earth&amp;rsquo;s destruction as it is demolished to make way for a hyperspace bypass. Arthur spends the next several years, still wearing his dressing gown, helplessly launched from crisis to crisis while trying to straighten out his lifestyle.</description>
+      <description>Saundra Schlesinger is a PhD candidate currently studying tendon development. As an undergraduate she attended Arizona State University where she studied the role of hypoxia on insect physiology in the lab of Dr. Jon Harrison. She graduated in 2010 with a degree in Genetics, Cell, and Developmental Biology. She then worked as a research technician in the lab of Dr. Peter Chen at the University of Washington where she investigated the role of the protein Syndecan-1 in the progression of wound healing, influenza infection, and lung cancer.</description>
     </item>
     
     <item>
@@ -28,6 +27,17 @@ Along with Ford Prefect, Dent barely escapes the Earth&amp;rsquo;s destruction a
       
       <guid>/blog/take-a-sad-plot-and-make-it-better-test/</guid>
       <description>library(gapminder)library(tidyverse)## -- Attaching packages ------------------------------------------------------------------------------------------------ tidyverse 1.2.1 --## v ggplot2 2.2.1 v purrr 0.2.4## v tibble 1.4.2 v dplyr 0.7.5## v tidyr 0.8.1 v stringr 1.3.1## v readr 1.1.1 v forcats 0.3.0## -- Conflicts --------------------------------------------------------------------------------------------------- tidyverse_conflicts() --## x dplyr::filter() masks stats::filter()## x dplyr::lag() masks stats::lag()library(dplyr)library(ggplot2)library(readr)Gapminder Challenge Pick at least two of the tasks below from the task menu and approach each with a table and figure.</description>
+    </item>
+    
+    <item>
+      <title>01 - Sad Plot Made Better</title>
+      <link>/blog/01-sad-plot-made-better/</link>
+      <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/01-sad-plot-made-better/</guid>
+      <description>Call In Libraries and Data
+library(tidyverse)## -- Attaching packages ------------------------------------------------------------------------------------------------ tidyverse 1.2.1 --## v ggplot2 2.2.1 v purrr 0.2.4## v tibble 1.4.2 v dplyr 0.7.5## v tidyr 0.8.1 v stringr 1.3.1## v readr 1.1.1 v forcats 0.3.0## -- Conflicts --------------------------------------------------------------------------------------------------- tidyverse_conflicts() --## x dplyr::filter() masks stats::filter()## x dplyr::lag() masks stats::lag()library(dplyr)library(ggplot2)library(readr)library(babynames)library(stringr)Add column of first letters
+baby_letters &amp;lt;- babynames %&amp;gt;%mutate(first_letter=str_sub(name, 1,1))Add up proportion for each letter by year + sex</description>
     </item>
     
     <item>

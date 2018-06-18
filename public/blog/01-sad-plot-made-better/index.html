@@ -2,7 +2,6 @@
 <html lang="en-US">
 
 <head>
-	<meta name="generator" content="Hugo 0.40.3" />
 <meta charset="utf-8">
 <meta name="HandheldFriendly" content="True">
 <meta name="MobileOptimized" content="320">
@@ -16,24 +15,24 @@
 <meta property="og:site_name" content="Schlesinger CS631" />
 <meta property="og:locale" content="nn_NO" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/" />
-<meta property="og:title" content="Schlesinger CS631" />
-<meta property="twitter:title" content="Schlesinger CS631">
+<meta property="og:url" content="/blog/01-sad-plot-made-better/" />
+<meta property="og:title" content="01 - Sad Plot Made Better" />
+<meta property="twitter:title" content="01 - Sad Plot Made Better">
 
-    <meta property="og:image" content="/img/banner.png">
+    <meta property="og:image" content="//images/image.jpg">
     <meta property="twitter:card" content="summary">
-    <meta property="twitter:image" content="/img/banner.png">
+    <meta property="twitter:image" content="//images/image.jpg">
 
-<meta property="og:description" content="Professional Website">
-<meta property="twitter:description" content="Professional Website">
+<meta property="og:description" content="Desc">
+<meta property="twitter:description" content="Desc">
 
 <title>
 
 
-    Schlesinger CS631
+     Schlesinger CS631 - 01 - Sad Plot Made Better 
 
 </title>
-<link rel="canonical" href="/">
+<link rel="canonical" href="/blog/01-sad-plot-made-better/">
 
 
 <style media="screen">
@@ -1057,8 +1056,6 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
 
 
 
-  <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Schlesinger CS631" />
-
 
 </head>
 
@@ -1066,7 +1063,7 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
 <body>
 
 
-<div class="header header-home column">
+<div class="header column">
 
     <div class="container">
         
@@ -1105,56 +1102,165 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
     </div>
 </div>
 
-<div class="main column">
+
+
+
+<div class="main post non-narrow zero-top-spacing column">
     <div class="container">
         <div class="content">
-            
-                <div class="markdown">
-                <p><em>This is the home page. It will display the blog section if there is one, and a text before.</em></p>
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
 
-<p>Hey ! Welcome to the <strong>Cocoa Enhanced theme</strong>. Here are some articles :</p>
+    01 - Sad Plot Made Better
 
-<p>Here are some slides: <a href="slides/slides.html">linkname</a></p>
+</div>
 
                 </div>
-            
-
-            
-                <div class="posts">
-                
-                
-                    <div class="page-heading">Latest posts</div>
-                    <ul>
+                <div class="meta">
+                    <div class="date" title="Sun Jun 10 2018 00:00:00 UTC">Jun 10, 2018</div>
                     
-                        <li class="groupby">Jun, 2018</li>
                         
-                            <li class="post-item">
-    <span class="meta">Jun 13, 2018</span>
-    <a href="/blog/take-a-sad-plot-and-make-it-better-test/"><span>Take a sad plot and make it better - TEST</span></a>
-</li>
-
-                        
-                            <li class="post-item">
-    <span class="meta">Jun 10, 2018</span>
-    <a href="/blog/01-sad-plot-made-better/"><span>01 - Sad Plot Made Better</span></a>
-</li>
-
+                        <div class="author middot" title="Saundra Schlesinger">Saundra Schlesinger</div>
                         
                     
-                    </ul>
-
-                    
-                
+                    <div class="reading-time middot">4 minute read</div>
+                    <div class="tags">
+                        <ul>
+                          
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <ul>
+                          
+                            
+                          
+                          
+                            
+                          
+                        </ul>
+                    </div>
                 </div>
-            
-
-            <div class="best-posts">
-            
-            
             </div>
+            <div class="markdown">
+                
+    
+    <p>Call In Libraries and Data</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## -- Attaching packages ------------------------------------------------------------------------------------------------ tidyverse 1.2.1 --</code></pre>
+<pre><code>## v ggplot2 2.2.1     v purrr   0.2.4
+## v tibble  1.4.2     v dplyr   0.7.5
+## v tidyr   0.8.1     v stringr 1.3.1
+## v readr   1.1.1     v forcats 0.3.0</code></pre>
+<pre><code>## -- Conflicts --------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(dplyr)
+library(ggplot2)
+library(readr)
+library(babynames)
+library(stringr)</code></pre>
+<p>Add column of first letters</p>
+<pre class="r"><code>baby_letters &lt;- babynames %&gt;%
+  mutate(first_letter=str_sub(name, 1,1))</code></pre>
+<p>Add up proportion for each letter by year + sex</p>
+<pre class="r"><code>letter_by_year &lt;- baby_letters %&gt;%
+  count(year, sex, first_letter, wt = prop) %&gt;% #wt=prop is taking all [year] [letter] names proportions and adding the proportions
+  rename(total_prop=nn)</code></pre>
+<p>Label most popular for each year + sex</p>
+<pre class="r"><code>letter_by_year&lt;- letter_by_year %&gt;%
+  group_by(sex, year) %&gt;%
+  mutate(top_yearly=case_when(
+    total_prop == max(total_prop) ~ first_letter)) %&gt;% #think of left of tilde as logical. Ex: if total_prop is equal to max total prop then variable is first letter
+  ungroup() %&gt;% #want to return only current year, so need to ungroup
+  mutate(top_latest=case_when(
+    year == max(year) ~ top_yearly #top yearly is equal to max (current) year
+  ))</code></pre>
+<p>Make a data frame with just the latest top letters</p>
+<pre class="r"><code>top_current &lt;- letter_by_year %&gt;%
+  filter(!is.na(top_latest))%&gt;% #pull out the not-N/A rows
+  rename(color_by = top_latest) %&gt;% 
+  select(sex, first_letter, color_by)</code></pre>
+<p>Now merge back in</p>
+<pre class="r"><code>letter_by_year &lt;- letter_by_year %&gt;%
+  left_join(top_current) %&gt;%
+  mutate(color_by = replace_na(color_by, &quot;else&quot;)) #replace N/A with string &quot;else&quot;</code></pre>
+<pre><code>## Joining, by = c(&quot;sex&quot;, &quot;first_letter&quot;)</code></pre>
+<p>Set up colors for males and females</p>
+<pre class="r"><code>my_colors &lt;- c(&quot;#FF1493&quot;, &quot;gray80&quot;, &quot;#3399ff&quot;)</code></pre>
+<p>Change proportion to percent</p>
+<pre class="r"><code>letter_by_year &lt;- letter_by_year %&gt;%
+  mutate(total_prop = total_prop*100)</code></pre>
+<p>Plot it!</p>
+<pre class="r"><code>ggplot(letter_by_year, aes(x = year, y = total_prop, color = color_by, group = first_letter)) +
+  geom_line()+
+  scale_color_manual(&quot;First Letter&quot;, values = my_colors) +
+  facet_wrap(~sex) +
+  ggtitle(&quot;First Letter Baby Name Trends&quot;, subtitle = &quot;Popularity of first letter of baby names fluctuates over time.&quot;) +
+  labs(x=&quot;Year&quot;, y=&quot;Proportion of Baby Names Beginning with Letter (%)&quot;, family = &quot;Stencil&quot;) +
+  theme(
+    plot.background = element_rect(fill = &quot;white&quot;),
+    panel.background = element_rect(fill = &quot;white&quot;),
+    axis.title = element_text(face=&quot;bold&quot;), 
+    title = element_text(face=&quot;bold&quot;), 
+    axis.text = element_text(size = 10), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    axis.line.x = element_line(color = &quot;gray30&quot;, size = .5), 
+    axis.line.y = element_line(color = &quot;gray30&quot;, size = .5), 
+    axis.ticks = element_line(color = &quot;gray30&quot;, size = 1)) </code></pre>
+<p><img src="/blog/2018-06-10-01-sad-plot-made-better_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Type of graph: This is a line graph.</p>
+<p>Description of data: These data are from the babynames set, which tracks incidence of babies’ names over time.</p>
+<p>Description of audience: These data could be for a number of audiences. It could be for people looking to name their own baby - do they want to be with a trend or not? This could be for indivuduals interested in their own name’s letter’s popularity. Some letters have shown steady popularity, but others had a period of popularity before falling back off.</p>
+<p>Representation Description: I am trying to highlight the current popular first letter, and how its popularity has changed over time. Today’s most popular first letter highlighted and then is graphed against all other letters over time, faceted by gender. You can see the percent of names represented on the y-axis, and the year on the x-axis.</p>
+<p>How to read it &amp; What to look for: Look how the trend of popularity has changed. For instance, in this case J is currently popular and has been popular through the last century for boys’ names. A for girls, though, was only moderately popular before suffering a bout of unpopularity after WWII, but then quickly rebounded in the 60’s to the number one spot. Very interesting! Another thing to look for is how the percent representation of the popular letter compares to other letters. For both, the popular letter makes up a little over 15% of names, and the next most popular letter about 10%. That has changed with time, for instance in the boys’ case, J has remained most popular by several percentage points over time except for a period around 1950 when another letter came quite close.</p>
+<p>Presentation tips: Color was used to emphasize the current popular letter and de-emphasize all other letters. The data are faceted to provide a chart for both boys’ and girls’ names. The colors chosen are the stereotypical ‘boys/blue’ and ‘girls/pink’ drawing more attention to the differences between the two.</p>
+<p>Variations and alternatives: A similar chart would be a stacked area graph, but I argue it would be detrimental to the visualization by adding unneeded noise. I think this is the best method and there is no good alternative, really.</p>
+<p>Methods: For this graph I pulled out the first letter from all the names in the list over time. I then collected them to determine how many of each letter were represented in each year. The letter with the highest number for the latest year was pulled out as the ‘popular’ letter. That letter was then graphed against all other letters over time.</p>
+
+
+                <br>
+            </div>
+            
+            <div class="share">
+                  
+                  <a href="" class="ssk ssk-facebook"></a>
+                  
+                  
+                  <a href="" class="ssk ssk-twitter"></a>
+                  
+                  
+                  <a href="" class="ssk ssk-google-plus"></a>
+                  
+                  
+                  <a href="" class="ssk ssk-linkedin"></a>
+                  
+            </div>
+            
+            
+                <div class="navigation">
+                    
+                    <div style="width: 100%;"></div>
+                    
+                    <div>
+                        <a href="/blog/take-a-sad-plot-and-make-it-better-test/">Take a sad plot and make it better - TEST</a>
+                        <img class="icon" src="/img/next.svg" alt="next" />
+                    </div>
+                    
+                </div>
+            
+            <br>
+            <div class="disqus">
+                
+            </div>
+            
         </div>
     </div>
 </div>
+
 <div class="footer column">
     <div class="container">
 
