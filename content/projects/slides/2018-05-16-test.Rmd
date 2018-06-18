@@ -1,0 +1,26 @@
+---
+title: "Saundra Schlesinger CS631 Final Project"
+author: "Saundra Schlesinger"
+date: "June 20, 2018"
+output: 
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+    nature:
+      highlightStyle: atelier-lakeside-light
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+Global Chunk Option
+```{r}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+                      fig.width = 10.5, fig.height = 4, 
+                      comment = NA, rows.print = 16)
+```
+ 
+---
+
+class: inverse, middle, center
+# This is Slide 1
+## This is slide 1
+---
