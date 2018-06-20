@@ -6,8 +6,6 @@
     <meta name="author" content="Saundra Schlesinger" />
     <meta name="date" content="2018-06-20" />
     <link href="2018-06-20-finalslides_files/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="2018-06-20-finalslides_files/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
-    <link href="2018-06-20-finalslides_files/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
   </head>
   <body>
     <textarea id="source">
@@ -32,152 +30,141 @@ class: center, middle, inverse, title-slide
 
 
 
+class: center
 
-
-
-class: inverse, middle, center
 #Tendon Elongation
 ![](https://i.imgur.com/jx2iYpB.png)&lt;!-- --&gt;
 
 ---
 
-class: inverse, center
 #Parameters of Tendon Growth
 ![](https://i.imgur.com/uEKbnjV.png)&lt;!-- --&gt;
 
-Length
+- Length  
 --
-&lt;br&gt;&lt;/br&gt;Cell number (via DAPI+ nuclear marker)
+
+- Cell number (via DAPI+ nuclear marker)  
 --
-&lt;br&gt;&lt;/br&gt;Cross-sectional area (cells + matrix)
+
+- Cross-sectional area (cells + matrix)  
 --
-&lt;br&gt;&lt;/br&gt;Proliferation (% EdU+ nuclei)
+
+- Proliferation (% EdU+ nuclei)
 
 ---
 
-class: inverse, center
 #Parameters of Tendon Growth
 ![](https://i.imgur.com/uEKbnjV.png)&lt;!-- --&gt;
 
-&lt;b&gt;Length
-&lt;br&gt;&lt;/br&gt; Cell number (via DAPI+ nuclear marker)
-&lt;/b&gt;
-&lt;br&gt;&lt;/br&gt;Cross-sectional area (cells + matrix)
-&lt;br&gt;&lt;/br&gt;Proliferation (% EdU+ nuclei)
+- __Length__
+- Cell number (via DAPI+ nuclear marker)
+- Cross-sectional area (cells + matrix)
+- Proliferation (% EdU+ nuclei)
 
 ---
 
 #Collection Method
+![](https://i.imgur.com/uEKbnjV.png)&lt;!-- --&gt;
 
-Sectioned Limb
+- Sectioned Limb
 --
-&lt;br&gt;&lt;/br&gt;Quantified growth parameters for 10 sections per limb
+
+- Quantified growth parameters for 10 sections per limb
 --
-&lt;br&gt;&lt;/br&gt;Averaged values from all sections to create one value per parameter per limb
+
+- Averaged values from all sections to create one value per parameter per limb
 --
-&lt;br&gt;&lt;/br&gt;Each value/limb is one N
 
----
-
-
-```r
-quant &lt;- read_csv("https://gist.githubusercontent.com/sschlesinger/44ec0c892ce0bf0d78e750bc78e2aef7/raw/bba5617841b28de26a569c5a0dd10d2cd7933fc9/TendonQuant.csv")
-```
-
-
-```r
-glimpse(quant)
-```
-
-```
-Observations: 25
-Variables: 6
-$ Mouse  &lt;chr&gt; "EH89-2", "EH89-4", "EH89-5", "ER93-1", "FI01-1", "LW02...
-$ Stage  &lt;chr&gt; "E14.5", "E14.5", "E14.5", "E14.5", "E16.5", "E16.5", "...
-$ Dapi   &lt;dbl&gt; 81.6, 70.1, 70.5, 75.9, 66.9, 67.8, 70.1, 70.2, 88.4, 8...
-$ Edu    &lt;dbl&gt; 12.2, 20.8, 15.9, 16.5, 11.4, 9.6, 11.9, 12.5, 4.3, 4.5...
-$ CSA    &lt;int&gt; 2656, 2153, 2174, 2404, 2332, 2380, 2901, 2372, 7158, 7...
-$ Length &lt;int&gt; 384, 480, 423, 432, 816, 1056, 768, 768, 1812, 1921, 18...
-```
+- Each value/limb is one N
 
 ---
 
 #Tidied and prepared data
 
-Added a column to convert embryonic/postnatal staging to days
+
+
+```r
+head(quant)
+```
+
+```
+## # A tibble: 6 x 6
+##   Mouse  Stage  Dapi   Edu   CSA Length
+##   &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;  &lt;int&gt;
+## 1 EH89-2 E14.5  81.6  12.2  2656    384
+## 2 EH89-4 E14.5  70.1  20.8  2153    480
+## 3 EH89-5 E14.5  70.5  15.9  2174    423
+## 4 ER93-1 E14.5  75.9  16.5  2404    432
+## 5 FI01-1 E16.5  66.9  11.4  2332    816
+## 6 LW02-8 E16.5  67.8   9.6  2380   1056
+```
 --
-&lt;br&gt;&lt;/br&gt;Converted um to cm
+
+- Added a column to convert embryonic/postnatal staging to days
 --
-&lt;br&gt;&lt;/br&gt;Created color palette
+
+- Converted um to cm
+--
+
+- Created color palette - chose to use color to help differentiate staging, especially between embryonic and postnatal
 
 ---
 
 #Axes
-![](2018-06-20-finalslides_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+&lt;img src="2018-06-20-finalslides_files/figure-html/unnamed-chunk-12-1.png" width="768" /&gt;
 
 ---
 
-![](2018-06-20-finalslides_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+#First Data Set
+&lt;img src="2018-06-20-finalslides_files/figure-html/unnamed-chunk-13-1.png" width="768" /&gt;
 
 ---
 
 #Final Length Visualization
-![](2018-06-20-finalslides_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
-
----
-
-&lt;small&gt;
-
-```r
-*ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Length,
-* color=fct_reorder2(Stage,days_post_conception,Length))) +
-* geom_jitter(
-      position = position_jitter(height = 0, width = .1), 
-      alpha = .5) + 
-* stat_summary(fun.y = median,
-               fun.ymin = median, 
-               fun.ymax = median, 
-               geom = "crossbar", 
-               lwd = .2, # make median line thinner
-               width = .5)+ # set median line width
-  labs(title = "FCU Tendon Length By Developmental Stage", 
-       x = "Stage", y = "Averaged Length (cm)") +
-* scale_color_manual(name="Stage", values=c(Color_Cont))+
-  theme(
-    plot.background = element_rect(fill = "white"),
-    panel.background = element_rect(fill = "white"),
-    axis.title = element_text(face="bold"), 
-    title = element_text(face="bold"), 
-    axis.text = element_text(size = 10), 
-    panel.grid.major.y = element_blank(), 
-    panel.grid.major.x = element_blank(), 
-    panel.grid.minor.y = element_blank(), 
-    panel.grid.minor.x = element_blank(), 
-    axis.line.x = element_line(color = "gray30", size = .5), 
-    axis.line.y = element_line(color = "gray30", size = .5), 
-    axis.ticks = element_line(color = "gray30", size = 1)
-    )+
-  guides(colour = guide_legend(reverse=T))
-```
-&lt;/small&gt;
+&lt;img src="2018-06-20-finalslides_files/figure-html/unnamed-chunk-14-1.png" width="768" /&gt;
 
 ---
 
 #Continuous rather than Discrete
-![](2018-06-20-finalslides_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+&lt;img src="2018-06-20-finalslides_files/figure-html/unnamed-chunk-15-1.png" width="768" /&gt;
 
 ---
 
-class: inverse, center
-#Example of previously used visualization (WHAT?)
+class: center
+#Example of previously used visualization
+##WHAT?
 
 ![](https://i.imgur.com/OhghF6h.png)&lt;!-- --&gt;
+
+---
+
+#All 4 plots together
+
+.pull-left[
+&lt;img src="2018-06-20-finalslides_files/figure-html/unnamed-chunk-17-1.png" width="384" /&gt;
+
+
+--
+
+
+&lt;img src="2018-06-20-finalslides_files/figure-html/unnamed-chunk-18-1.png" width="384" /&gt;
+]
+
+--
+
+.pull-right[
+&lt;img src="2018-06-20-finalslides_files/figure-html/unnamed-chunk-19-1.png" width="384" /&gt;
+
+
+--
+
+
+&lt;img src="2018-06-20-finalslides_files/figure-html/unnamed-chunk-20-1.png" width="384" /&gt;
+]
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "atelier-lakeside-light",
-"highlightLines": true,
-"countIncrementalSlides": false
+"highlightStyle": "atelier-forest-light"
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

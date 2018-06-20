@@ -4,18 +4,10 @@ author: "Saundra Schlesinger"
 date: "June 20, 2018"
 output: 
   xaringan::moon_reader:
-    css: [default, metropolis, metropolis-fonts]
+    css: ["default"]
     nature:
-      highlightStyle: atelier-lakeside-light
-      highlightLines: true
-      countIncrementalSlides: false
+      highlightStyle: atelier-forest-light
 ---
-
-```{r echo = FALSE, include = FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
-                      fig.width = 10.5, fig.height = 6, 
-                      comment = NA, rows.print = 16)
-```
 
 ```{r load_packages, include = FALSE, echo = FALSE}
 library(here)
@@ -56,8 +48,8 @@ quant_corr <- quant_corr %>%
 Color_Cont <- beyonce_palette(21)[c(1,2,3,4,5,6)]
 ```
 
+class: center
 
-class: inverse, middle, center
 #Tendon Elongation
 ```{r echo = FALSE}
 knitr::include_graphics("https://i.imgur.com/jx2iYpB.png")
@@ -65,104 +57,79 @@ knitr::include_graphics("https://i.imgur.com/jx2iYpB.png")
 
 ---
 
-class: inverse, center
 #Parameters of Tendon Growth
 ```{r echo = FALSE}
 knitr::include_graphics("https://i.imgur.com/uEKbnjV.png")
 ```
 
-Length
+- Length  
 --
-<br></br>Cell number (via DAPI+ nuclear marker)
+
+- Cell number (via DAPI+ nuclear marker)  
 --
-<br></br>Cross-sectional area (cells + matrix)
+
+- Cross-sectional area (cells + matrix)  
 --
-<br></br>Proliferation (% EdU+ nuclei)
+
+- Proliferation (% EdU+ nuclei)
 
 ---
 
-class: inverse, center
 #Parameters of Tendon Growth
 ```{r echo = FALSE}
 knitr::include_graphics("https://i.imgur.com/uEKbnjV.png")
 ```
 
-<b>Length
-<br></br> Cell number (via DAPI+ nuclear marker)
-</b>
-<br></br>Cross-sectional area (cells + matrix)
-<br></br>Proliferation (% EdU+ nuclei)
+- __Length__
+- Cell number (via DAPI+ nuclear marker)
+- Cross-sectional area (cells + matrix)
+- Proliferation (% EdU+ nuclei)
 
 ---
 
 #Collection Method
-
-Sectioned Limb
---
-<br></br>Quantified growth parameters for 10 sections per limb
---
-<br></br>Averaged values from all sections to create one value per parameter per limb
---
-<br></br>Each value/limb is one N
-
----
-
-```{r example-plot1, eval = FALSE}
-quant <- read_csv("https://gist.githubusercontent.com/sschlesinger/44ec0c892ce0bf0d78e750bc78e2aef7/raw/bba5617841b28de26a569c5a0dd10d2cd7933fc9/TendonQuant.csv")
+```{r echo = FALSE}
+knitr::include_graphics("https://i.imgur.com/uEKbnjV.png")
 ```
 
-```{r}
-glimpse(quant)
-```
+- Sectioned Limb
+--
+
+- Quantified growth parameters for 10 sections per limb
+--
+
+- Averaged values from all sections to create one value per parameter per limb
+--
+
+- Each value/limb is one N
 
 ---
 
 #Tidied and prepared data
+```{r include = FALSE}
+quant <- read_csv("https://gist.githubusercontent.com/sschlesinger/44ec0c892ce0bf0d78e750bc78e2aef7/raw/bba5617841b28de26a569c5a0dd10d2cd7933fc9/TendonQuant.csv")
+```
 
-Added a column to convert embryonic/postnatal staging to days
+```{r}
+head(quant)
+```
 --
-<br></br>Converted um to cm
+
+- Added a column to convert embryonic/postnatal staging to days
 --
-<br></br>Created color palette
+
+- Converted um to cm
+--
+
+- Created color palette - chose to use color to help differentiate staging, especially between embryonic and postnatal
 
 ---
 
 #Axes
-```{r echo = FALSE}
+```{r echo = FALSE, fig.width = 8, fig.height = 4}
 ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Length, color=fct_reorder2(Stage,days_post_conception,Length))) +
   labs(title = "FCU Tendon Length By Developmental Stage", x = "Stage", y = "Averaged Length (cm)") +
   scale_color_manual(name="Stage", values=c(Color_Cont))+
-  theme(
-    plot.background = element_rect(fill = "white"),
-    panel.background = element_rect(fill = "white"),
-    axis.title = element_text(face="bold"), 
-    title = element_text(face="bold"), 
-    axis.text = element_text(size = 10), 
-    panel.grid.major.y = element_blank(), 
-    panel.grid.major.x = element_blank(), 
-    panel.grid.minor.y = element_blank(), 
-    panel.grid.minor.x = element_blank(), 
-    axis.line.x = element_line(color = "gray30", size = .5), 
-    axis.line.y = element_line(color = "gray30", size = .5), 
-    axis.ticks = element_line(color = "gray30", size = 1)
-    )+
-  guides(colour = guide_legend(reverse=T))
-```
-
----
-
-```{r echo = FALSE}
-ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Length, color=fct_reorder2(Stage,days_post_conception,Length))) +
-  geom_jitter(position = position_jitter(height = 0, width = .1),
-              alpha = .5) + 
-  stat_summary(fun.y = median, 
-               fun.ymin = median, 
-               fun.ymax = median, 
-               geom = "crossbar", 
-               lwd = .2, # make median line thinner
-               width = .5)+ # set median line width
-  labs(title = "FCU Tendon Length By Developmental Stage", x = "Stage", y = "Averaged Length (cm)") +
-  scale_color_manual(name="Stage", values=c("white", "white", "white", "white", "white", "lightseagreen"))+
   theme(
     plot.background = element_rect(fill = "white"),
     panel.background = element_rect(fill = "white"),
@@ -183,8 +150,8 @@ ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y =
 
 ---
 
-#Final Length Visualization
-```{r echo = FALSE}
+#First Data Set
+```{r echo = FALSE, fig.width = 8, fig.height = 4}
 ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Length, color=fct_reorder2(Stage,days_post_conception,Length))) +
   geom_jitter(position = position_jitter(height = 0, width = .1),
               alpha = .5) + 
@@ -195,7 +162,7 @@ ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y =
                lwd = .2, # make median line thinner
                width = .5)+ # set median line width
   labs(title = "FCU Tendon Length By Developmental Stage", x = "Stage", y = "Averaged Length (cm)") +
-  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  scale_color_manual(values=c("white", "white", "white", "white", "white", "lightseagreen"))+
   theme(
     plot.background = element_rect(fill = "white"),
     panel.background = element_rect(fill = "white"),
@@ -208,29 +175,28 @@ ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y =
     panel.grid.minor.x = element_blank(), 
     axis.line.x = element_line(color = "gray30", size = .5), 
     axis.line.y = element_line(color = "gray30", size = .5), 
-    axis.ticks = element_line(color = "gray30", size = 1)
+    axis.ticks = element_line(color = "gray30", size = 1),
+    legend.position="none"
     )+
+  coord_cartesian(ylim=c(0,0.8)) +
   guides(colour = guide_legend(reverse=T))
 ```
 
 ---
 
-<small>
-```{r example-plot, eval = FALSE}
-ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Length, #<<
-  color=fct_reorder2(Stage,days_post_conception,Length))) + #<<
-  geom_jitter( #<<
-      position = position_jitter(height = 0, width = .1), 
-      alpha = .5) + 
-  stat_summary(fun.y = median, #<<
+#Final Length Visualization
+```{r echo = FALSE, fig.width = 8, fig.height = 4}
+ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Length, color=fct_reorder2(Stage,days_post_conception,Length))) +
+  geom_jitter(position = position_jitter(height = 0, width = .1),
+              alpha = .5) + 
+  stat_summary(fun.y = median, 
                fun.ymin = median, 
                fun.ymax = median, 
                geom = "crossbar", 
                lwd = .2, # make median line thinner
                width = .5)+ # set median line width
-  labs(title = "FCU Tendon Length By Developmental Stage", 
-       x = "Stage", y = "Averaged Length (cm)") +
-  scale_color_manual(name="Stage", values=c(Color_Cont))+ #<<
+  labs(title = "FCU Tendon Length By Developmental Stage", x = "Stage", y = "Averaged Length (cm)") +
+  scale_color_manual(values=c(Color_Cont))+
   theme(
     plot.background = element_rect(fill = "white"),
     panel.background = element_rect(fill = "white"),
@@ -243,16 +209,17 @@ ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y =
     panel.grid.minor.x = element_blank(), 
     axis.line.x = element_line(color = "gray30", size = .5), 
     axis.line.y = element_line(color = "gray30", size = .5), 
-    axis.ticks = element_line(color = "gray30", size = 1)
+    axis.ticks = element_line(color = "gray30", size = 1),
+    legend.position="none"
     )+
+  coord_cartesian(ylim=c(0,0.8)) +
   guides(colour = guide_legend(reverse=T))
 ```
-</small>
 
 ---
 
 #Continuous rather than Discrete
-```{r echo = FALSE}
+```{r echo = FALSE, fig.width = 8, fig.height = 4}
 ggplot(quant_corr, aes(x = as.numeric(days_post_conception), y = Length, color=fct_reorder2(Stage,days_post_conception,Length))) +
 #  geom_line(data=quant_corr_med, aes(x = as.numeric(days_post_conception), y = LengthMed)) +
   geom_jitter(position = position_jitter(height = 0, width = 1),
@@ -280,14 +247,158 @@ ggplot(quant_corr, aes(x = as.numeric(days_post_conception), y = Length, color=f
       axis.ticks = element_line(color = "gray30", size = 1)
       ) +
   scale_x_continuous(breaks=c(19, 49, 119))+
+  coord_cartesian(ylim=c(0,0.8)) +
   guides(colour = guide_legend(reverse=T))
 ```
 
 ---
 
-class: inverse, center
-#Example of previously used visualization (WHAT?)
+class: center
+#Example of previously used visualization
+##WHAT?
 
 ```{r echo = FALSE}
 knitr::include_graphics("https://i.imgur.com/OhghF6h.png")
 ```
+
+---
+
+#All 4 plots together
+
+.pull-left[
+```{r echo = FALSE, fig.width = 4, fig.height = 2.3}
+ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Length, color=fct_reorder2(Stage,days_post_conception,Length))) +
+  geom_jitter(position = position_jitter(height = 0, width = .1),
+              alpha = .5) + 
+  stat_summary(fun.y = median, 
+               fun.ymin = median, 
+               fun.ymax = median, 
+               geom = "crossbar", 
+               lwd = .2, # make median line thinner
+               width = .5)+ # set median line width
+  labs(title = "FCU Tendon Length", x = "Stage", y = "Length (cm)") +
+  scale_color_manual(values=c(Color_Cont))+
+  theme(
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    axis.title = element_text(face="bold"), 
+    title = element_text(face="bold"), 
+    axis.text = element_text(size = 10), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    axis.line.x = element_line(color = "gray30", size = .5), 
+    axis.line.y = element_line(color = "gray30", size = .5), 
+    axis.ticks = element_line(color = "gray30", size = 1),
+    legend.position="none"
+    )+
+  coord_cartesian(ylim=c(0,0.8)) +
+  guides(colour = guide_legend(reverse=T))
+```
+
+
+--
+
+
+```{r echo = FALSE, fig.width = 4, fig.height = 2.3}
+ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Dapi, color=fct_reorder2(Stage,days_post_conception,Length))) +
+  geom_jitter(position = position_jitter(height = 0, width = .1),
+              alpha = .5) + 
+  stat_summary(fun.y = median, 
+               fun.ymin = median, 
+               fun.ymax = median, 
+               geom = "crossbar", 
+               lwd = .2, # make median line thinner
+               width = .5)+ # set median line width
+  labs(title = "FCU Tendon Cells/Section", x = "Stage", y = "Cells per Section (Dapi+)") +
+  scale_color_manual(values=c(Color_Cont))+
+  theme(
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    axis.title = element_text(face="bold"), 
+    title = element_text(face="bold"), 
+    axis.text = element_text(size = 10), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    axis.line.x = element_line(color = "gray30", size = .5), 
+    axis.line.y = element_line(color = "gray30", size = .5), 
+    axis.ticks = element_line(color = "gray30", size = 1),
+    legend.position="none"
+    )+
+  coord_cartesian(ylim=c(0,130)) +
+  guides(colour = guide_legend(reverse=T))
+```
+]
+
+--
+
+.pull-right[
+```{r echo = FALSE, fig.width = 4, fig.height = 2.3}
+ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = CSA, color=fct_reorder2(Stage,days_post_conception,Length))) +
+  geom_jitter(position = position_jitter(height = 0, width = .1),
+              alpha = .5) + 
+  stat_summary(fun.y = median, 
+               fun.ymin = median, 
+               fun.ymax = median, 
+               geom = "crossbar", 
+               lwd = .2, # make median line thinner
+               width = .5)+ # set median line width
+  labs(title = "FCU Tendon Cross-sectional Area", x = "Stage", y = "Cross-sectional Area (um^3)") +
+  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  theme(
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    axis.title = element_text(face="bold"), 
+    title = element_text(face="bold"), 
+    axis.text = element_text(size = 10), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    axis.line.x = element_line(color = "gray30", size = .5), 
+    axis.line.y = element_line(color = "gray30", size = .5), 
+    axis.ticks = element_line(color = "gray30", size = 1),
+    legend.position="none"
+    )+
+  coord_cartesian(ylim=c(0,40000)) +
+  guides(colour = guide_legend(reverse=T))
+```
+
+
+--
+
+
+```{r echo = FALSE, fig.width = 4, fig.height = 2.3}
+ggplot(quant_corr, aes(x = reorder(Stage, as.numeric(days_post_conception)), y = Edu, color=fct_reorder2(Stage,days_post_conception,Length))) +
+  geom_jitter(position = position_jitter(height = 0, width = .1),
+              alpha = .5) + 
+  stat_summary(fun.y = median, 
+               fun.ymin = median, 
+               fun.ymax = median, 
+               geom = "crossbar", 
+               lwd = .2, # make median line thinner
+               width = .5)+ # set median line width
+  labs(title = "FCU Tendon Cross-sectional Area", x = "Stage", y = "Proliferation (% Edu+)") +
+  scale_color_manual(name="Stage", values=c(Color_Cont))+
+  theme(
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    axis.title = element_text(face="bold"), 
+    title = element_text(face="bold"), 
+    axis.text = element_text(size = 10), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    axis.line.x = element_line(color = "gray30", size = .5), 
+    axis.line.y = element_line(color = "gray30", size = .5), 
+    axis.ticks = element_line(color = "gray30", size = 1),
+    legend.position="none"
+    )+
+  coord_cartesian(ylim=c(0,25)) +
+  guides(colour = guide_legend(reverse=T))
+```
+]
