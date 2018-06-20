@@ -58,32 +58,22 @@ knitr::include_graphics("https://i.imgur.com/jx2iYpB.png")
 ---
 
 #Parameters of Tendon Growth
+##How is tendon growth quantified?
 ```{r echo = FALSE}
-knitr::include_graphics("https://i.imgur.com/uEKbnjV.png")
+knitr::include_graphics("https://i.imgur.com/jx2iYpB.png")
 ```
+--
 
 - Length  
 --
 
-- Cell number (via DAPI+ nuclear marker)  
+- Cell number
 --
 
-- Cross-sectional area (cells + matrix)  
+- Girth
 --
 
-- Proliferation (% EdU+ nuclei)
-
----
-
-#Parameters of Tendon Growth
-```{r echo = FALSE}
-knitr::include_graphics("https://i.imgur.com/uEKbnjV.png")
-```
-
-- __Length__
-- Cell number (via DAPI+ nuclear marker)
-- Cross-sectional area (cells + matrix)
-- Proliferation (% EdU+ nuclei)
+- Cell proliferation
 
 ---
 
@@ -91,6 +81,7 @@ knitr::include_graphics("https://i.imgur.com/uEKbnjV.png")
 ```{r echo = FALSE}
 knitr::include_graphics("https://i.imgur.com/uEKbnjV.png")
 ```
+--
 
 - Sectioned Limb
 --
@@ -104,6 +95,19 @@ knitr::include_graphics("https://i.imgur.com/uEKbnjV.png")
 - Each value/limb is one N
 
 ---
+
+#Back to Parameters of Tendon Growth
+```{r echo = FALSE}
+knitr::include_graphics("https://i.imgur.com/uEKbnjV.png")
+```
+
+- __Length__
+- Cell number (via DAPI+ nuclear marker)
+- Girth: Cross-sectional area (cells + matrix)
+- Cell Proliferation (% EdU+ nuclei)
+
+---
+
 
 #Tidied and prepared data
 ```{r include = FALSE}
