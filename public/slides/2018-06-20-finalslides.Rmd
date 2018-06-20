@@ -55,9 +55,9 @@ class: center
 knitr::include_graphics("https://i.imgur.com/jx2iYpB.png")
 ```
 
---
-```{r echo = FALSE}
-knitr::include_graphics("https://www.physio-pedia.com/images/d/d1/Tendon-structure.png")
+
+```{r echo = FALSE, , width = 4, height = 2}
+knitr::include_graphics("http://histology.medicine.umich.edu/sites/default/files/ctPract2.jpg")
 ```
 
 ---
